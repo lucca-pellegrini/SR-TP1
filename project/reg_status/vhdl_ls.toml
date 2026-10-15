@@ -1,0 +1,16 @@
+preferred_case = "upper_snake"
+standard = "2008"
+
+[libraries.ieee2008]
+files = [
+  "lib/ieee_2008/std_logic_1164.vhd",
+  "lib/ieee_2008/std_logic_unsigned.vhd",
+]
+is_third_party = true
+
+[libraries.reg_status]
+files = ["./*.vhd"]
+exclude = ["*_tb.vhd"]
+
+[lint]
+unused_signal = true
