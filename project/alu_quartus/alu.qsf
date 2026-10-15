@@ -102,6 +102,12 @@ set_location_assignment PIN_AF23 -to LEDR[1]
 set_location_assignment PIN_AB21 -to LEDR[2]
 set_location_assignment PIN_AC22 -to LEDR[3]
 set_location_assignment PIN_AD22 -to LEDR[4]
+# LEDs vermelhos LEDR5..9 (não usados, sempre '0')
+set_location_assignment PIN_AD23 -to LEDR[5]
+set_location_assignment PIN_AD21 -to LEDR[6]
+set_location_assignment PIN_AC21 -to LEDR[7]
+set_location_assignment PIN_AA14 -to LEDR[8]
+set_location_assignment PIN_Y13 -to LEDR[9]
 # LEDs vermelhos LEDR10..17 (r_out em binário)
 set_location_assignment PIN_AA13 -to LEDR[10]
 set_location_assignment PIN_AC14 -to LEDR[11]
@@ -121,7 +127,107 @@ set_global_assignment -name USE_CONFIGURATION_DEVICE ON
 set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"
 set_global_assignment -name RESERVE_ALL_UNUSED_PINS_NO_OUTPUT_GND "AS INPUT TRI-STATED"
 set_global_assignment -name INCREMENTAL_VECTOR_INPUT_SOURCE /home/luc/src/vscode/sr/tp1/project/alu_quartus/alu.vwf
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+
+# Evita o aviso "Parallel compilation is not licensed" (Web Edition só
+# permite 1 processador mesmo com mais núcleos disponíveis).
+set_global_assignment -name NUM_PARALLEL_PROCESSORS 1
+
+# Fornece restrições de timing (o design é puramente combinacional, então
+# usamos um clock virtual só para caracterizar os atrasos entrada->saída).
+# Isso remove o Critical Warning de SDC ausente e o aviso "No clocks defined".
+set_global_assignment -name SDC_FILE alu.sdc
+
+# Capacitância de carga das saídas (evita o aviso de 71 pinos sem
+# OUTPUT_PIN_LOAD especificado; 0 pF mantém o mesmo valor assumido por
+# default, só que agora declarado explicitamente).
+
+# Observação: as linhas PARTITION_* e PARTITION_HIERARCHY da versão anterior
+# deste arquivo foram removidas de propósito. Elas ativavam compilação
+# incremental com uma região LogicLock, recurso que exige assinatura paga e
+# gerava o aviso (292013) "Feature LogicLock is only available with a valid
+# subscription license". Este projeto é pequeno e não precisa de compilação
+# incremental, então a compilação completa (full compile) de qualquer forma.
+
+# Os avisos (13024)/(13410) "stuck at VCC/GND" são esperados e intencionais
+# neste design, não bugs:
+#   - HEX3: só o segmento do meio (g) muda; os outros 6 segmentos ficam
+#     sempre apagados ("1") de propósito (só mostramos o sinal '-').
+#   - LEDR[5..9]: amarrados em '0' de propósito (não usados).
+#   - HEX2[1]: a centena (d_cem) só assume 0, 1 ou 2 (valor máximo |r_out|
+#     com sinal é 255 -> centena no máximo 2), então esse bit do decodificador
+#     nunca varia dentro desse subconjunto de casos.
+# Suprimidos aqui para manter o relatório de compilação limpo. Remova estas
+# duas linhas se preferir continuar vendo esses avisos informativos.
+set_global_assignment -name MESSAGE_DISABLE 13024
+set_global_assignment -name MESSAGE_DISABLE 13410
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX0[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX0[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX0[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX0[3]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX0[4]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX0[5]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX0[6]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX1[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX1[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX1[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX1[3]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX1[4]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX1[5]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX1[6]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX2[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX2[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX2[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX2[3]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX2[4]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX2[5]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX2[6]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX3[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX3[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX3[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX3[3]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX3[4]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX3[5]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX3[6]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX4[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX4[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX4[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX4[3]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX4[4]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX4[5]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX4[6]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX5[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX5[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX5[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX5[3]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX5[4]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX5[5]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX5[6]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX7[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX7[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX7[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX7[3]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX7[4]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX7[5]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to HEX7[6]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[3]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[4]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[5]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[6]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[7]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[8]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[9]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[10]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[11]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[12]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[13]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[14]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[15]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[16]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDR[17]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDG[0]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDG[1]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDG[2]
+set_instance_assignment -name OUTPUT_PIN_LOAD 0 -to LEDG[3]
