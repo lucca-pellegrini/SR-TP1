@@ -11,7 +11,11 @@ ENTITY reg_bank IS
 		b_sel  : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
 		wr_ena : IN  STD_LOGIC;
 		a_do   : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-		b_do   : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+		b_do   : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+		-- Conteúdo de todos os registradores (R3 & R2 & R1 & R0), só para
+		-- visualização (usado pelo de2_reg_bank); não faz parte da interface
+		-- original do banco.
+		r_all  : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 	);
 END ENTITY;
 
@@ -29,6 +33,7 @@ BEGIN
 	-- Leitura: combinacional, sem clock e sem habilitação ----------------
 	a_do <= r(a_idx);
 	b_do <= r(b_idx);
+	r_all <= r(3) & r(2) & r(1) & r(0);
 
 	-- Escrita: síncrona, só com wr_ena = '1', no registrador apontado por
 	-- a_sel. O reset assíncrono vem primeiro na cadeia, logo tem prioridade.

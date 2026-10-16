@@ -37,7 +37,8 @@ ARCHITECTURE sim OF reg_bank_tb IS
 BEGIN
 	dut : ENTITY work.reg_bank
 		PORT MAP (nrst => nrst, clk_in => clk, di => di, a_sel => a_sel,
-		          b_sel => b_sel, wr_ena => wr_ena, a_do => a_do, b_do => b_do);
+		          b_sel => b_sel, wr_ena => wr_ena, a_do => a_do, b_do => b_do,
+		          r_all => OPEN);
 
 	-- Clock de 10 ns, até o fim do teste.
 	PROCESS
