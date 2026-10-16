@@ -1,0 +1,32 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rcccccccp{5.3cm}}
+\caption{Casos de teste de \texttt{reg\_bank\_leitura.vwf}: leitura assíncrona.}
+\label{tab:caso-reg-bank-leitura}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{di} & \texttt{a\_sel} & \texttt{b\_sel} & \texttt{wr\_ena} & \texttt{a\_do} & \texttt{b\_do} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{di} & \texttt{a\_sel} & \texttt{b\_sel} & \texttt{wr\_ena} & \texttt{a\_do} & \texttt{b\_do} & Observação \\ \hline \endhead
+0--20 & 0 & 00h & 0 & 0 & 0 & 00h & 00h &  \\
+20--40 & 1 & 10h & 0 & 0 & 1 & 10h & 10h & R0 = 10h \\
+40--60 & 1 & 20h & 1 & 0 & 1 & 20h & 10h & R1 = 20h \\
+60--80 & 1 & 40h & 2 & 0 & 1 & 40h & 10h & R2 = 40h \\
+80--100 & 1 & 80h & 3 & 0 & 1 & 80h & 10h & R3 = 80h \\
+100--105 & 1 & FFh & 3 & 0 & 0 & 80h & 10h & wr\_ena = 0, di = FFh (ignorado) \\
+105--125 & 1 & FFh & 0 & 0 & 0 & 10h & 10h & a\_sel = 0, b\_sel = 0 \\
+125--145 & 1 & FFh & 0 & 1 & 0 & 10h & 20h & a\_sel = 0, b\_sel = 1 \\
+145--165 & 1 & FFh & 0 & 2 & 0 & 10h & 40h & a\_sel = 0, b\_sel = 2 \\
+165--185 & 1 & FFh & 0 & 3 & 0 & 10h & 80h & a\_sel = 0, b\_sel = 3 \\
+185--205 & 1 & FFh & 1 & 0 & 0 & 20h & 10h & a\_sel = 1, b\_sel = 0 \\
+205--225 & 1 & FFh & 1 & 1 & 0 & 20h & 20h & a\_sel = 1, b\_sel = 1 \\
+225--245 & 1 & FFh & 1 & 2 & 0 & 20h & 40h & a\_sel = 1, b\_sel = 2 \\
+245--265 & 1 & FFh & 1 & 3 & 0 & 20h & 80h & a\_sel = 1, b\_sel = 3 \\
+265--285 & 1 & FFh & 2 & 0 & 0 & 40h & 10h & a\_sel = 2, b\_sel = 0 \\
+285--305 & 1 & FFh & 2 & 1 & 0 & 40h & 20h & a\_sel = 2, b\_sel = 1 \\
+305--325 & 1 & FFh & 2 & 2 & 0 & 40h & 40h & a\_sel = 2, b\_sel = 2 \\
+325--345 & 1 & FFh & 2 & 3 & 0 & 40h & 80h & a\_sel = 2, b\_sel = 3 \\
+345--365 & 1 & FFh & 3 & 0 & 0 & 80h & 10h & a\_sel = 3, b\_sel = 0 \\
+365--385 & 1 & FFh & 3 & 1 & 0 & 80h & 20h & a\_sel = 3, b\_sel = 1 \\
+385--405 & 1 & FFh & 3 & 2 & 0 & 80h & 40h & a\_sel = 3, b\_sel = 2 \\
+405--420 & 1 & FFh & 3 & 3 & 0 & 80h & 80h & a\_sel = 3, b\_sel = 3 \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

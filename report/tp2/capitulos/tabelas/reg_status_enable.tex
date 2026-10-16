@@ -1,0 +1,24 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rccccp{4.4cm}}
+\caption{Casos de teste de \texttt{reg\_status\_enable.vwf}: habilitação bit a bit.}
+\label{tab:caso-reg-status-enable}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{status\_reg\_in} & \texttt{status\_reg\_wr\_ena} & \texttt{status\_reg\_out} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{status\_reg\_in} & \texttt{status\_reg\_wr\_ena} & \texttt{status\_reg\_out} & Observação \\ \hline \endhead
+0--20 & 0 & 00000 & 00000 & 00000 &  \\
+20--40 & 1 & 11111 & 00001 & 00001 & seta só RN \\
+40--60 & 1 & 11111 & 00010 & 00011 & seta só RV \\
+60--80 & 1 & 11111 & 00100 & 00111 & seta só RZ \\
+80--100 & 1 & 11111 & 01000 & 01111 & seta só RH \\
+100--120 & 1 & 11111 & 10000 & 11111 & seta só RC \\
+120--140 & 1 & 00000 & 00000 & 11111 & ninguém habilitado, in = 00000: mantém 11111 \\
+140--160 & 1 & 00000 & 00001 & 11110 & zera só RN \\
+160--180 & 1 & 00000 & 00010 & 11100 & zera só RV \\
+180--200 & 1 & 00000 & 00100 & 11000 & zera só RZ \\
+200--220 & 1 & 00000 & 01000 & 10000 & zera só RH \\
+220--240 & 1 & 00000 & 10000 & 00000 & zera só RC \\
+240--260 & 1 & 10101 & 10101 & 10101 & habilita RN, RZ, RC com in = 10101 \\
+260--280 & 1 & 01010 & 11010 & 01111 & habilita os outros dois com in = 01010 e RC com 0 \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

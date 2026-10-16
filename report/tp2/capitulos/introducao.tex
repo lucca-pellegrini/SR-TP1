@@ -1,0 +1,35 @@
+\chapter{Introdução}
+\label{cap:introducao}
+
+Um processador, mesmo simples, precisa de elementos de memória ao lado da lógica que calcula: registradores para guardar operandos e resultados, registradores de status para lembrar o resultado das \textit{flags} da ALU, uma pilha para guardar endereços de retorno e um contador de programa que aponta para a próxima instrução. Este trabalho, desenvolvido na disciplina de Sistemas Reconfiguráveis, projeta esses quatro blocos em VHDL \cite{ashenden2008,pedroni2010}. Eles complementam a ALU de 8 bits do primeiro trabalho prático (TP1), cujas \textit{flags} de saída são justamente as entradas do registrador de status.
+
+Os blocos são projetos \textbf{independentes}: cada um tem seu próprio projeto no Quartus II, seus próprios testes e um capítulo neste relatório. A ligação entre o contador de programa e a pilha, indicada na especificação \cite{tp2}, será feita no quarto trabalho, conforme a especificação.
+
+\section{Objetivos}
+
+O objetivo geral é descrever, simular e documentar quatro blocos sequenciais. Os objetivos específicos são:
+
+\begin{itemize}
+  \item descrever em VHDL o banco de registradores (\texttt{reg\_bank}), o registrador de status (\texttt{reg\_status}), a pilha (\texttt{stack}) e o contador de programa (\texttt{prog\_cnt}), com todas as entradas e saídas dos tipos \texttt{std\_logic} e \texttt{std\_logic\_vector};
+  \item implementar em todos eles um \textit{reset} assíncrono com prioridade sobre as demais entradas e escrita síncrona na borda de subida do clock;
+  \item evitar \textit{latches} indesejados: toda memória deve ser um \textit{flip-flop} e estar numa construção disparada por borda de clock;
+  \item definir casos de teste, simular cada projeto e comparar os resultados com os valores esperados.
+\end{itemize}
+
+\section{Ferramentas e restrições}
+
+A especificação exige o Quartus II 9.1sp2 \cite{tp2}. Os projetos usam o formato desse \textit{software} e foram compilados e simulados no Quartus II 13.0sp1, o mesmo fluxo usado no TP1, para o dispositivo Cyclone II EP2C35F672C6 da placa DE2. Além da simulação por formas de onda (arquivos \texttt{.vwf}), cada projeto tem um \textit{testbench} em VHDL, executado com o simulador de código aberto \texttt{nvc}, para uma validação mínima antes de montar as formas de onda.
+
+O código segue estas regras:
+
+\begin{itemize}
+  \item a lógica combinacional é escrita em código concorrente (\texttt{with-select}, \texttt{when-else}, operadores);
+  \item o \texttt{process} é usado somente onde é necessário ou muito mais conciso: nos registradores, que dependem da borda do clock e do reset assíncrono \cite{aula8};
+  \item o clock é testado com \texttt{RISING\_EDGE}, e todo sinal que guarda estado é atribuído dentro dessa condição, de modo que a memória é sempre um \textit{flip-flop} e nunca um \textit{latch} \cite{aula7}.
+\end{itemize}
+
+O código-fonte não é reproduzido por extenso: cada bloco de código do relatório aponta para o arquivo do repositório (por exemplo, \texttt{project/stack/stack.vhd}), de modo que o relatório sempre reflete a versão atual dos arquivos.
+
+\section{Organização do relatório}
+
+O Capítulo~\ref{cap:fundamentos} resume os conceitos de lógica sequencial e de VHDL usados. Os Capítulos~\ref{cap:reg_bank}, \ref{cap:reg_status}, \ref{cap:stack} e \ref{cap:prog_cnt} tratam, cada um, de um bloco, e têm a mesma estrutura: especificação, implementação (com o circuito em nível RTL e o arquivo de código) e simulação, com casos de teste e resultados. O Capítulo~\ref{cap:conclusao} reúne as conclusões. O Apêndice~\ref{ap:arquivos} lista os arquivos entregues e o Apêndice~\ref{ap:tabelas} traz as tabelas de casos de teste das demais formas de onda.

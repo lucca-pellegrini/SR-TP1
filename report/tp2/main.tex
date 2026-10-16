@@ -1,0 +1,230 @@
+
+%% This work may be distributed and/or modified under the conditions of the LaTeX Project Public License, either version 1.3 of this license or (at your option) any later version. The latest version of this license is in http://www.latex-project.org/lppl.txt and version 1.3 or later is part of all distributions of LaTeX version 2005/12/01 or later. This work has the LPPL maintenance status `maintained'. Further information about abnTeX2 are available on https://github.com/abntex/abntex2 | https://www.abntex.net.br/
+%%
+%% The Current maintainer of this template is Geraldo Pereira de M. Jr. 
+%% Contact: geraldo.pmj@gmail.com
+%%
+\documentclass[
+	12pt,				% tamanho da fonte
+	oneside,			% impressão em um lado da folha (relatório entregue em PDF)
+	a4paper,			% tamanho do papel.
+	sumario = tradicional,
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	brazilian			% o último idioma é o principal do documento
+	]{abntex2}
+\input{config/packages}
+\input{config/pdfconfig}
+
+\usetikzlibrary{calc,arrows.meta}
+
+% ---------------------------------------------------------------
+% Código VHDL com o minted (Pygments). O código NÃO é copiado para o
+% relatório: cada bloco só aponta para o arquivo do projeto com
+% \inputminted, então editar o .vhd muda o relatório na próxima
+% compilação. Exige -shell-escape (já está no justfile).
+% ---------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{codebg}{RGB}{255,248,215}
+\definecolor{codeborder}{RGB}{210,160,0}
+% a opção newfloat evita carregar o pacote float, que redefine o \newfloat do memoir
+\usepackage[newfloat]{minted}
+\setminted{
+  style=tango,
+  bgcolor=codebg,
+  fontsize=\scriptsize,
+  linenos,
+  numbersep=5pt,
+  breaklines,
+  tabsize=4,
+  frame=single,
+  framesep=4pt,
+  rulecolor=codeborder
+}
+% \blocovhdl{legenda}{rótulo}{projeto}{arquivo}: aponta para
+% ../../project/<projeto>/<arquivo>, sem copiar o código para o relatório.
+\newcommand{\blocovhdl}[4]{%
+  \begin{codigo}
+    \caption{#1}\label{#2}
+    \inputminted{vhdl}{../../project/#3/#4}
+    \fonte{Autoria própria (arquivo \texttt{\detokenize{project/#3/#4}}).}
+  \end{codigo}}
+
+% Diagramas de blocos (TikZ): portas de entrada à esquerda e de saída à
+% direita do nó \texttt{bloco}; \#3 = "line width=1.2pt" para barramentos.
+\tikzset{port/.style={font=\small\ttfamily}}
+\newcommand{\fio}{2.2} % comprimento dos fios das portas (cm), ajustável por figura
+\newcommand{\pentrada}[3]{\draw[->,#3] ($(bloco.west)+(-\fio,#1)$) -- ($(bloco.west)+(0,#1)$);
+  \node[port, anchor=east] at ($(bloco.west)+(-\fio-0.1,#1)$) {#2};}
+\newcommand{\psaida}[3]{\draw[->,#3] ($(bloco.east)+(0,#1)$) -- ($(bloco.east)+(\fio,#1)$);
+  \node[port, anchor=west] at ($(bloco.east)+(\fio+0.1,#1)$) {#2};}
+
+% ---
+% Pacote que deixa vários comandos do LaTex comumente usados em português. Pode ver exemplos na Introdução. Contudo pode continuar a usar os comandos do LaTex normalmente se preferir.
+% ---
+\usepackage{PTLatexCommands}
+
+% Permite quebrar palavras em \texttt e folga extra para evitar linhas estouradas
+\usepackage[htt]{hyphenat}
+\usepackage{needspace}
+\setlength{\emergencystretch}{2em}
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Banco de Registradores, Registrador de Status, Pilha e Contador de Programa em VHDL}
+\autor{Ariel Inácio Jordão Coelho\break Lucca Mendes Alves Pellegrini} % TODO: substituir pelo seu nome
+\local{Belo Horizonte}
+\data{2026}
+\orientador{Francisco Manoel Pinto Garcia} % TODO: substituir
+\instituicao{%
+  Pontifícia Universidade Católica de Minas Gerais
+  \par
+  Engenharia de Computação}
+\tipotrabalho{Relatório Técnico (Graduação)}
+% O preambulo deve conter o tipo do trabalho, o objetivo, 
+% o nome da instituição e a área de concentração 
+\preambulo{Relatório técnico do Segundo Trabalho Prático (TP2), apresentado à
+disciplina de Sistemas Reconfiguráveis do Curso de
+Engenharia de Computação da Pontifícia Universidade Católica de Minas Gerais.\linebreak
+\textbf{Área de concentração}: Sistemas Digitais e Reconfiguráveis \newline
+\textbf{Professor}: \imprimirorientador}
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ----
+% Início do documento
+% ----
+\begin{document}
+\selectlanguage{brazilian}
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing 
+%spaçamento 
+%----------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+%----------------------------------------------------
+\pretextual
+%---
+% Capa
+%---
+\imprimircapa 
+%---
+% Folha de rosto
+% (sem ficha catalográfica neste relatório)
+%---
+
+\imprimirfolhaderosto
+
+%---
+% Inserir a ficha bibliografica
+%---
+% Isto é um exemplo de Ficha Catalográfica, ou ``Dados internacionais de
+% catalogação-na-publicação''. Você pode utilizar este modelo como referência. 
+% Porém, provavelmente a biblioteca da sua universidade lhe fornecerá um PDF
+% com a ficha catalográfica definitiva após a defesa do trabalho. Quando estiver
+% com o documento, salve-o como PDF no diretório do seu projeto e substitua todo
+% o conteúdo de implementação deste arquivo pelo comando abaixo:
+% \input{capitulos/ficha.tex}
+%---
+%Inserir errata
+%---
+%\input{capitulos/errata.tex}
+%---
+% Inserir folha de aprovação
+%---
+% \input{capitulos/aprov.tex} 
+%---
+% Dedicatória
+%---
+% \input{capitulos/dedi.tex}
+%---
+% RESUMOS
+%---
+\input{capitulos/resumos.tex}
+%---
+%LISTAS
+%---
+\input{capitulos/Listas.tex}
+%---
+%inserir o sumario
+%---
+\input{capitulos/sum.tex}
+
+%-----------------------------------------------------
+% ELEMENTOS TEXTUAIS
+%-----------------------------------------------------
+
+\textual
+
+%-----------------------------------------------------
+%-----------------------------------------------------
+\input{capitulos/introducao.tex}
+%-----------------------------------------------------
+\input{capitulos/cap2.tex}
+%-----------------------------------------------------
+\input{capitulos/reg_bank.tex}
+%-----------------------------------------------------
+\input{capitulos/reg_status.tex}
+%-----------------------------------------------------
+\input{capitulos/stack.tex}
+%-----------------------------------------------------
+\input{capitulos/prog_cnt.tex}
+%-----------------------------------------------------
+\input{capitulos/conclusao.tex}
+%-----------------------------------------------------
+
+% ELEMENTOS PÓS-TEXTUAIS ------------------------------------------------------
+
+\postextual
+
+\pagestyle{plain}
+
+%----------------------------------------------------
+% Referências bibliográficas
+%----------------------------------------------------
+
+\printbibliography[heading=bibintoc,title={Referências}]
+
+%-----------------------------------------------------
+% Glossário 
+%-----------------------------------------------------
+% Consulte o manual da classe abntex2 para orientações sobre o glossário.
+
+%\glossary
+
+%-----------------------------------------------------
+% Apêndices 
+%-----------------------------------------------------
+% Inicia os apêndices
+%---
+
+\begin{apendicesenv}
+\input{capitulos/apend.tex}
+\end{apendicesenv}
+
+%--- 
+
+%-----------------------------------------------------
+% Anexos (não utilizados)
+%-----------------------------------------------------
+
+% Este relatório não possui anexos.
+
+%-----------------------------------------------------
+% INDICE REMISSIVO
+%-----------------------------------------------------
+
+% Este relatório não utiliza índice remissivo.
+% \input{capitulos/indiceremiss.tex}
+
+%-----------------------------------------------------
+\end{document}

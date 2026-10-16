@@ -1,0 +1,35 @@
+% ---
+% Pacotes básicos 
+% --
+\usepackage{times} %{lmodern}	% Usa a fonte Latin Modern			
+\usepackage[T1]{fontenc}% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}	% Indenta o primeiro parágrafo de cada seção.
+\usepackage[top=30mm, bottom=20mm, left=30mm, right=20mm]{geometry}
+\usepackage{color}		% Controle das cores
+\usepackage{graphicx}	% Inclusão de gráficos
+\graphicspath{ {./build/figuras/} }
+\usepackage{microtype} 	% para melhorias de justificação
+\usepackage{fancyhdr} %define o estilo do documento
+\usepackage{array} %permite o uso de tabelas
+\usepackage{longtable} %permite o uso de tabelas personalizadas
+\usepackage{rotating} %permite rotacionar imagens
+\usepackage{tikz} %permite o desenho de formas geométricas simples dadas suas características
+\usepackage{PPGAN}
+\usepackage{ragged2e}
+\usepackage{csquotes}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{amssymb}
+% ---
+% Pacotes de citações
+% ---
+\usepackage[style=abnt, repeatfields, backend=biber]{biblatex}
+\addbibresource{referencias.bib} % Seus arquivos de
+
+\ifthenelse{\equal{\ABNTEXisarticle}{true}}{%
+\renewcommand{\maketitlehookb}{}
+}{}
+\PassOptionsToPackage{brazilian,english}{babel}
+
+\DeclareUnicodeCharacter{031C}{ç}

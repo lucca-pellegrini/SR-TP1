@@ -1,0 +1,14 @@
+\begin{resumo}
+Este relatório apresenta o desenvolvimento, em VHDL, de quatro blocos sequenciais independentes que formam a base do caminho de dados de um processador simples: um banco de quatro registradores de 8 bits com duas portas de leitura assíncrona (\texttt{reg\_bank}), um registrador de status de cinco \textit{flags} com habilitação individual (\texttt{reg\_status}), uma pilha de oito posições de 11 bits (\texttt{stack}) e um contador de programa de 11 bits com carga síncrona (\texttt{prog\_cnt}). Todos têm reset assíncrono com prioridade sobre as demais entradas e todas as suas portas são do tipo \texttt{std\_logic} ou \texttt{std\_logic\_vector}. O código combinacional é concorrente, e o \texttt{process} é usado apenas nos elementos de memória. São descritas a especificação, a arquitetura e o circuito interpretado em nível RTL de cada bloco, os casos de teste e os resultados da simulação funcional no Quartus II, que concordam com os valores esperados.
+
+\textbf{Palavras-chave}: Banco de registradores. Pilha. Contador de programa. VHDL. Lógica sequencial. Sistemas reconfiguráveis. Quartus.
+\end{resumo}
+
+\begin{resumo}[Abstract]
+\begin{otherlanguage*}{english}
+This report presents four independent sequential blocks written in VHDL that form the basis of a simple processor datapath: a register file with four 8-bit registers and two asynchronous read ports (\texttt{reg\_bank}), a status register with five individually enabled flags (\texttt{reg\_status}), an eight-entry, 11-bit stack (\texttt{stack}) and an 11-bit program counter with synchronous load (\texttt{prog\_cnt}). All of them have an asynchronous reset that takes priority over every other input, and all ports are \texttt{std\_logic} or \texttt{std\_logic\_vector}. Combinational logic is written as concurrent code, and \texttt{process} is used only for the memory elements. The specification, the architecture and the RTL view of each block, the test cases and the functional simulation results obtained with Quartus II are described; the results match the expected values.
+
+\vspace{\onelineskip}
+\noindent\textbf{Keywords}: Register file. Stack. Program counter. VHDL. Sequential logic. Reconfigurable systems. Quartus.
+\end{otherlanguage*}
+\end{resumo}

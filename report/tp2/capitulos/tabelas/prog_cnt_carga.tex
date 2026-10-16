@@ -1,0 +1,29 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rccccccp{4.2cm}}
+\caption{Casos de teste de \texttt{prog\_cnt\_carga.vwf}: cargas e next\_pc\_out combinacional.}
+\label{tab:caso-prog-cnt-carga}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{pc\_ctrl} & \texttt{new\_pc\_in} & \texttt{from\_stack} & \texttt{next\_pc\_out} & \texttt{pc\_out} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{pc\_ctrl} & \texttt{new\_pc\_in} & \texttt{from\_stack} & \texttt{next\_pc\_out} & \texttt{pc\_out} & Observação \\ \hline \endhead
+0--20 & 0 & 00 & 1000 & 2000 & 0 & 0 &  \\
+20--40 & 1 & 10 & 1000 & 2000 & 1000 & 1000 & pc\_ctrl = 10: carga de new\_pc\_in = 1000 (from\_stack = 2000 é ignorado) \\
+40--60 & 1 & 01 & 1000 & 2000 & 2000 & 2000 & pc\_ctrl = 01: carga de from\_stack = 2000 \\
+60--65 & 1 & 00 & 1000 & 2000 & 2000 & 2000 & pc\_ctrl = 00: mantém \\
+65--80 & 1 & 00 & 1 & 2000 & 2000 & 2000 & new\_pc\_in = 1: sem efeito (pc\_ctrl = 00) \\
+80--105 & 1 & 10 & 1 & 2000 & 1 & 1 & pc\_ctrl = 10: carga de new\_pc\_in = 1 \\
+105--120 & 1 & 01 & 1 & 2000 & 2000 & 2000 & pc\_ctrl = 01 antes da borda: next\_pc\_out muda na hora para from\_stack \\
+120--140 & 1 & 11 & 1 & 2000 & 2002 & 2001 & pc\_ctrl = 11: next\_pc\_out = pc + 1 \\
+140--145 & 1 & 11 & 1 & 2000 & 2002 & 2001 & pc\_ctrl = 00 \\
+145--165 & 1 & 00 & 1 & 2000 & 2001 & 2001 & pc\_ctrl = 00 e pc = 2001 (hold) \\
+165--185 & 1 & 00 & 1 & 1365 & 2001 & 2001 & from\_stack muda para 1365: next\_pc\_out só reage com pc\_ctrl = 01 \\
+185--205 & 1 & 01 & 1 & 1365 & 1365 & 1365 & pc\_ctrl = 01 \\
+205--225 & 1 & 10 & 682 & 1365 & 682 & 682 & new\_pc\_in = 682, pc\_ctrl = 10 \\
+225--245 & 1 & 11 & 682 & 1365 & 684 & 683 & pc\_ctrl = 11 \\
+245--265 & 1 & 00 & 682 & 1365 & 683 & 683 & pc\_ctrl = 00 \\
+265--285 & 1 & 01 & 682 & 0 & 0 & 0 & carga de 0 pela pilha \\
+285--305 & 1 & 10 & 2047 & 0 & 2047 & 2047 & carga de 2047 por new\_pc\_in \\
+305--325 & 1 & 11 & 2047 & 0 & 1 & 0 & incrementa: volta a 0 \\
+325--360 & 1 & 00 & 2047 & 0 & 0 & 0 & mantém \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

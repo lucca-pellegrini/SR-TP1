@@ -1,0 +1,24 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rccccccp{4.2cm}}
+\caption{Casos de teste de \texttt{prog\_cnt.vwf}: visão geral.}
+\label{tab:caso-prog-cnt}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{pc\_ctrl} & \texttt{new\_pc\_in} & \texttt{from\_stack} & \texttt{next\_pc\_out} & \texttt{pc\_out} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{pc\_ctrl} & \texttt{new\_pc\_in} & \texttt{from\_stack} & \texttt{next\_pc\_out} & \texttt{pc\_out} & Observação \\ \hline \endhead
+0--20 & 0 & 00 & 100 & 677 & 0 & 0 &  \\
+20--40 & 1 & 11 & 100 & 677 & 2 & 1 & solta o reset; incrementa \\
+40--60 & 1 & 11 & 100 & 677 & 3 & 2 & incrementa \\
+60--80 & 1 & 11 & 100 & 677 & 4 & 3 & incrementa \\
+80--100 & 1 & 00 & 100 & 677 & 3 & 3 & mantém (00) \\
+100--120 & 1 & 10 & 100 & 677 & 100 & 100 & carrega new\_pc\_in = 100 \\
+120--140 & 1 & 11 & 100 & 677 & 102 & 101 & incrementa \\
+140--160 & 1 & 01 & 100 & 677 & 677 & 677 & carrega from\_stack = 677 \\
+160--180 & 1 & 11 & 100 & 677 & 679 & 678 & incrementa \\
+180--205 & 1 & 00 & 100 & 677 & 678 & 678 & mantém \\
+205--225 & 0 & 00 & 100 & 677 & 0 & 0 & reset assíncrono \\
+225--240 & 1 & 00 & 100 & 677 & 0 & 0 & solta o reset \\
+240--260 & 1 & 11 & 100 & 677 & 2 & 1 & incrementa \\
+260--280 & 1 & 00 & 100 & 677 & 1 & 1 & mantém \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

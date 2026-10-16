@@ -1,0 +1,52 @@
+\chapter{Fundamentação teórica}
+\label{cap:fundamentos}
+
+\section{Lógica combinacional e sequencial}
+
+Na lógica combinacional as saídas dependem apenas dos valores presentes nas entradas; na lógica sequencial dependem também do estado anterior, ou seja, há memória \cite{aula4}. Em VHDL a distinção aparece como código concorrente \textit{versus} sequencial. Fora de um \texttt{PROCESS} todas as instruções são avaliadas ``ao mesmo tempo'' e a ordem das linhas não importa; dentro de um \texttt{PROCESS} as instruções são executadas em sequência, de cima para baixo, e o processo é reexecutado sempre que um sinal da sua lista de sensibilidade muda. Dois processos, no entanto, são concorrentes entre si \cite{aula8}. Um \texttt{PROCESS} pode descrever tanto lógica combinacional quanto sequencial; o que decide é a forma como é escrito.
+
+\section{Flip-flops e requisitos temporais}
+
+O elemento básico de memória síncrona é o \textit{flip-flop} (FF) tipo D, que captura a entrada na borda ativa do clock. Para isso a entrada deve ficar estável por um tempo mínimo antes da borda (\textit{setup time}, $t_{su}$) e depois dela (\textit{hold time}, $t_h$). O atraso entre a borda e a estabilização da saída é o $t_{CQ}$ \cite{aula1}. A folga (\textit{slack}) de \textit{setup} de um caminho entre dois FFs é
+\begin{equation}
+  \text{slack}_{\text{setup}} = T_{\text{clk}} - t_{CQ} - t_{\text{logic}} - t_{su} - t_{\text{skew}},
+  \label{eq:slack}
+\end{equation}
+e o caminho de menor folga é o caminho crítico, que limita a frequência máxima. Nos quatro blocos deste trabalho o caminho crítico é curto (um multiplexador entre dois registradores, no máximo, e um incrementador de 11 bits no contador de programa), e o analisador de \textit{timing} do Quartus (TimeQuest) confirma folgas positivas para um clock de 50\,MHz, o do oscilador da DE2.
+
+\section{Registradores com reset assíncrono e habilitação}
+
+Um registrador é um conjunto de FFs D que compartilham o mesmo clock. Nos blocos deste trabalho cada FF tem:
+
+\begin{itemize}
+  \item um \textit{reset} assíncrono ativo em nível baixo (\texttt{nrst}), que zera o FF independentemente do clock e tem prioridade sobre tudo o mais;
+  \item uma habilitação de escrita (\textit{clock enable}): na borda de subida o FF só captura o novo dado se a habilitação estiver ativa; senão, mantém o valor.
+\end{itemize}
+
+Essa prioridade é obtida pela ordem das condições num \texttt{IF}/\texttt{ELSIF} encadeado: o teste do reset vem primeiro e, se for verdadeiro, o clock nem é examinado; só quando o reset está inativo é que o \texttt{ELSIF} da borda de subida é avaliado \cite{aula8}. A lista de sensibilidade do processo contém apenas o reset e o clock, já que nada mais pode disparar uma mudança de estado.
+
+\section{Latches indesejados}
+
+Um \textit{latch} é um elemento de memória sensível a nível, e não a borda. Ele aparece, sem querer, quando uma lógica que deveria ser combinacional deixa um sinal sem valor em alguma combinação das entradas: o sintetizador conclui que o sinal deve ``manter o valor anterior'' \cite{aula7}. Em lógica combinacional vale a regra de que todo sinal recebe valor em todas as condições, terminando as atribuições condicionais com um \texttt{ELSE} ou as seleções com \texttt{WHEN OTHERS}. A omissão de atribuição só é correta dentro de um bloco disparado por borda, onde ela é a forma de descrever a manutenção do estado de um FF. Todas as saídas combinacionais dos blocos deste trabalho (as leituras do banco de registradores e o próximo valor do contador) são completas, e os relatórios do Quartus não indicam nenhum \textit{latch} inferido.
+
+\section{Tipos definidos pelo usuário e \textit{arrays}}
+
+O VHDL permite declarar \textit{arrays} de qualquer tipo, inclusive de vetores \cite{aula6}. O banco de registradores e a pilha são \textit{arrays} de \texttt{std\_logic\_vector}, o que permite tratar o conjunto de registradores como um único sinal, com um índice inteiro:
+
+\begin{itemize}
+  \item o índice vem da conversão de um vetor de seleção com as funções \texttt{UNSIGNED} e \texttt{TO\_INTEGER} do pacote \texttt{numeric\_std}; um índice variável num \textit{array} é sintetizável e vira um multiplexador (na leitura) ou um decodificador (na escrita);
+  \item um agregado como \texttt{(OTHERS => (OTHERS => '0'))} zera todos os elementos do \textit{array}, qualquer que seja o número ou a largura deles;
+  \item fatias do \textit{array} (como \texttt{r(1 TO 7)}) podem ser atribuídas de uma vez, desde que tenham o mesmo comprimento nos dois lados.
+\end{itemize}
+
+\section{Registradores de deslocamento e pilhas}
+
+Uma pilha é uma estrutura LIFO (\textit{last in, first out}): o último dado inserido (\textit{push}) é o primeiro a sair (\textit{pop}). Quando a profundidade é pequena e fixa, ela pode ser feita como um registrador de deslocamento de palavras: o \textit{push} desloca todas as posições em um sentido e escreve o novo dado no topo, e o \textit{pop} desloca no sentido contrário. Se há mais \textit{pushes} do que posições, o dado mais antigo se perde (\textit{stack overflow}); e um \textit{pop} numa pilha vazia só entrega zeros, pois o deslocamento injeta zeros no fundo.
+
+\section{Contadores síncronos e aritmética}
+
+Um contador síncrono é um registrador cujo próximo valor é calculado por uma lógica combinacional a partir do valor atual (e de entradas de controle), e que só é carregado na borda do clock. Com $n$ bits ele conta módulo $2^n$: o contador de programa de 11 bits conta de 0 a $2^{11}-1 = 2047$ e volta a 0. A soma sobre \texttt{std\_logic\_vector} exige um pacote que dê interpretação numérica ao vetor, como o \texttt{std\_logic\_unsigned}, que trata os vetores como números sem sinal e já descarta o \textit{carry} final, produzindo exatamente a volta módulo $2^n$ \cite{aula6}. A descrição em duas partes, uma combinacional (o próximo valor) e uma sequencial (os FFs), deixa explícito qual é o valor que será carregado na próxima borda, e esse valor é uma das saídas do bloco.
+
+\section{Verificação por simulação}
+
+A simulação funcional, usada neste trabalho, trata cada porta como se comutasse instantaneamente e só verifica a lógica; os atrasos reais só entram na simulação temporal, depois do \textit{place \& route} \cite{aula2}. Nos circuitos sequenciais é necessário, além dos valores de entrada, definir o clock, e as entradas devem mudar longe da borda ativa, para respeitar $t_{su}$ e $t_h$ \cite{aula1}. Nos arquivos \texttt{.vwf} do trabalho, o clock tem período de 20\,ns, com borda de subida em 10, 30, 50\,ns etc., e as entradas mudam nos instantes múltiplos de 20\,ns (isto é, na borda de descida), exceto nos casos que testam justamente o reset assíncrono ou pulsos de habilitação, que mudam em instantes intermediários.

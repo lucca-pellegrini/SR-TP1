@@ -1,0 +1,25 @@
+\chapter{Conclusão}
+\label{cap:conclusao}
+
+Foram desenvolvidos e verificados quatro blocos sequenciais independentes, descritos em VHDL com portas \texttt{std\_logic} e \texttt{std\_logic\_vector}: um banco de quatro registradores de 8 bits com leitura assíncrona dupla, um registrador de status com habilitação por bit, uma pilha de oito posições de 11 bits e um contador de programa módulo 2048 com carga síncrona. Todos têm \textit{reset} assíncrono com prioridade sobre as demais entradas.
+
+O padrão de escrita foi o mesmo nos quatro: a parte combinacional em código concorrente (as leituras do banco, o próximo estado do registrador de status e o próximo valor do contador) e um \texttt{process} sensível apenas a \texttt{nrst} e \texttt{clk\_in} para os registradores, com o reset testado antes da borda de subida. Essa forma garante que toda memória seja um \textit{flip-flop} e dispensa listas de sensibilidade em lógica combinacional. Duas construções do VHDL foram suficientes para a maior parte do trabalho: os \textit{arrays} de vetores, com índice variável, e as atribuições por fatias, que implementam o deslocamento da pilha em duas linhas. O Quadro~\ref{quad:recursos} mostra os recursos usados no Cyclone II EP2C35 depois da compilação.
+
+\begin{quadro}[htb]
+  \caption{Recursos e \textit{timing} de cada bloco no Cyclone II EP2C35F672C6, com clock de 50\,MHz.}
+  \label{quad:recursos}
+  \centering
+  \begin{tabular}{lcccc}
+    \hline
+    Bloco & Elementos lógicos & \textit{Flip-flops} & Pinos & $f_{max}$ (modelo lento) \\ \hline
+    \texttt{reg\_bank}   & 36 & 32 & 31 & 78,9\,MHz \\
+    \texttt{reg\_status} & 5  & 5  & 17 & 125,8\,MHz \\
+    \texttt{stack}       & 89 & 88 & 26 & 125,6\,MHz \\
+    \texttt{prog\_cnt}   & 33 & 11 & 48 & 65,6\,MHz \\ \hline
+  \end{tabular}
+  \fonte{Relatórios de compilação do Quartus II (\textit{Fitter} e TimeQuest).}
+\end{quadro}
+
+O número de \textit{flip-flops} de cada bloco é o esperado pela especificação: $4 \times 8 = 32$, $5$, $8 \times 11 = 88$ e $11$. O \texttt{prog\_cnt} é o de menor $f_{max}$ porque tem o incrementador de 11 bits e o multiplexador no mesmo caminho, e o \texttt{reg\_bank}, pelo decodificador de escrita e pelo multiplexador de leitura; ainda assim, todos operam com folga no clock de 50\,MHz da DE2. A compilação não inferiu nenhum \textit{latch}.
+
+A simulação funcional de todas as formas de onda e a execução dos \textit{testbenches} concordaram com os valores esperados em todos os casos, inclusive nos casos de borda: a prioridade do reset sobre a escrita, os pulsos de habilitação entre bordas, o \textit{overflow} e o esvaziamento da pilha e a volta do contador de 2047 a 0. Como trabalho futuro, o registrador de status poderá ser ligado às \textit{flags} da ALU do TP1, e o contador de programa será ligado à pilha no quarto trabalho, formando o caminho de dados com o qual os quatro blocos foram pensados.

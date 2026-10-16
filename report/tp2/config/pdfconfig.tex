@@ -1,0 +1,82 @@
+
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={\@author},
+		pdfkeywords={palavra-chave}{palavra-chave}{palavra-chave}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=black,          	% color of internal links
+    	citecolor=black,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=black,
+		bookmarksdepth=4}
+\makeatother
+% --- 
+
+% ---
+% Posiciona figuras e tabelas no topo da página quando adicionadas sozinhas
+% em um página em branco. Ver https://github.com/abntex/abntex2/issues/170
+\makeatletter
+\setlength{\@fptop}{5pt} % Set distance from top of page to first float
+\makeatother
+% ---
+
+% ---
+% Possibilita criação de Quadros e Lista de quadros.
+% Ver https://github.com/abntex/abntex2/issues/176
+%
+\newcommand{\quadroname}{Quadro}
+\newcommand{\listofquadrosname}{Lista de quadros}
+
+\newfloat[chapter]{quadro}{loq}{\quadroname}
+\newlistof{listofquadros}{loq}{\listofquadrosname}
+\newlistentry{quadro}{loq}{0}
+
+% configurações para atender às regras da ABNT
+\setfloatadjustment{quadro}{\centering}
+\counterwithout{quadro}{chapter}
+\renewcommand{\cftquadroname}{\quadroname\space} 
+\renewcommand*{\cftquadroaftersnum}{\hfill--\hfill}
+
+\setfloatlocations{quadro}{hbtp} % Ver https://github.com/abntex/abntex2/issues/176
+% ---
+
+% Float de código, no mesmo molde do "quadro" acima:
+% legenda em cima, fonte embaixo, numeração contínua e lista própria.
+\newcommand{\codigoname}{Código}
+\newcommand{\listofcodigosname}{Lista de códigos}
+\newfloat[chapter]{codigo}{loc}{\codigoname}
+\newlistof{listofcodigos}{loc}{\listofcodigosname}
+\newlistentry{codigo}{loc}{0}
+\setfloatadjustment{codigo}{\centering}
+\counterwithout{codigo}{chapter}
+\renewcommand{\cftcodigoname}{\codigoname\space}
+\renewcommand*{\cftcodigoaftersnum}{\hfill--\hfill}
+\setfloatlocations{codigo}{htbp}
+
+% ---
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.2cm}
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.3cm}  % tente também \onelineskip
+\linespread{1.7}
+\renewcommand{\baselinestretch}{1.5}
+%\DeclareUnicodeCharacter{0301}{i}
+
+\setlength\bibitemsep{4\itemsep}

@@ -1,0 +1,24 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rcccccp{5.7cm}}
+\caption{Casos de teste de \texttt{stack.vwf}: visão geral.}
+\label{tab:caso-stack}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{stack\_in} & \texttt{stack\_push} & \texttt{stack\_pop} & \texttt{stack\_out} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{stack\_in} & \texttt{stack\_push} & \texttt{stack\_pop} & \texttt{stack\_out} & Observação \\ \hline \endhead
+0--20 & 0 & 0 & 0 & 0 & 0 &  \\
+20--40 & 1 & 100 & 1 & 0 & 100 & solta o reset; push 100 \\
+40--60 & 1 & 200 & 1 & 0 & 200 & push 200 \\
+60--80 & 1 & 300 & 1 & 0 & 300 & push 300 \\
+80--100 & 1 & 999 & 0 & 1 & 200 & pop (volta a 200) \\
+100--120 & 1 & 999 & 0 & 1 & 100 & pop (volta a 100) \\
+120--140 & 1 & 400 & 1 & 0 & 400 & push 400 \\
+140--160 & 1 & 555 & 1 & 1 & 555 & push e pop juntos: push 555 vence \\
+160--180 & 1 & 777 & 0 & 0 & 555 & sem operação (stack\_in muda e é ignorado) \\
+180--200 & 1 & 777 & 0 & 1 & 400 & pop (555 sai, volta a 400) \\
+200--220 & 1 & 777 & 0 & 1 & 100 & pop (volta a 100) \\
+220--240 & 1 & 777 & 0 & 1 & 0 & pop (esvazia, topo = 0) \\
+240--260 & 1 & 777 & 0 & 1 & 0 & pop com a pilha vazia: continua 0 \\
+260--280 & 1 & 777 & 0 & 0 & 0 & sem operação \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

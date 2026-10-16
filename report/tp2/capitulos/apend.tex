@@ -1,0 +1,53 @@
+\chapter{Arquivos do projeto}
+\label{ap:arquivos}
+
+O trabalho foi organizado em quatro projetos independentes do Quartus II, um por pasta de \texttt{project/}, cada uma com a mesma estrutura (substituir \texttt{<nome>} por \texttt{reg\_bank}, \texttt{reg\_status}, \texttt{stack} ou \texttt{prog\_cnt}):
+
+\begin{description}
+  \item[\texttt{<nome>.vhd}] descrição VHDL do bloco, apresentada nos Códigos~\ref{lst:reg-bank}, \ref{lst:reg-status}, \ref{lst:stack} e \ref{lst:prog-cnt}. O relatório aponta direto para esses arquivos.
+  \item[\texttt{<nome>.qpf}, \texttt{<nome>.qsf}] arquivos do projeto no Quartus II, com o dispositivo (Cyclone II EP2C35F672C6), o arquivo VHDL e todos os arquivos de forma de onda.
+  \item[\texttt{<nome>.sdc}] restrição de clock de 50\,MHz usada pelo TimeQuest.
+  \item[\texttt{<nome>*.vwf}] formas de onda de simulação; \texttt{<nome>.vwf} é a visão geral e os demais, os casos específicos, descritos nos capítulos de cada bloco.
+  \item[\texttt{<nome>\_simulation.png}] captura da simulação de \texttt{<nome>.vwf}, usada nas Figuras~\ref{fig:sim-reg-bank}, \ref{fig:sim-reg-status}, \ref{fig:sim-stack} e \ref{fig:sim-prog-cnt}.
+  \item[\texttt{<nome>\_rtl.svg}] circuito em nível RTL gerado pelo RapidRTL, usado nas Figuras~\ref{fig:rtl-reg-bank}, \ref{fig:rtl-reg-status}, \ref{fig:rtl-stack} e \ref{fig:rtl-prog-cnt}. O \texttt{justfile} do relatório converte cada um em PDF com o Inkscape.
+  \item[\texttt{extras/<nome>\_tb.vhd}] \textit{testbench} auto-verificável, executado com o \texttt{nvc}.
+  \item[\texttt{extras/casos\_de\_teste.md}] tabelas de resultados esperados de todas as formas de onda do bloco.
+\end{description}
+
+Os \textit{testbenches} são executados, dentro da pasta do bloco, com:
+
+\begingroup\footnotesize
+\begin{verbatim}
+nvc --std=1993 -H 512m -a <nome>.vhd extras/<nome>_tb.vhd -e <nome>_tb -r
+\end{verbatim}
+\endgroup
+
+O relatório fica em \texttt{report/tp2/} e é gerado com \texttt{just pdf}. Os blocos de código usam o pacote \texttt{minted}, e por isso a compilação exige o Pygments e a opção \texttt{-shell-escape}, já incluída no \texttt{justfile}.
+
+\chapter{Casos de teste das demais formas de onda}
+\label{ap:tabelas}
+
+Este apêndice traz os valores esperados das formas de onda que não aparecem nos capítulos de cada bloco. Cada linha é um intervalo entre mudanças das entradas, e as saídas são as do fim do intervalo, depois de qualquer borda de subida dentro dele. As formas de onda de \texttt{reg\_bank}, \texttt{reg\_status}, \texttt{stack} e \texttt{prog\_cnt} são apresentadas nessa ordem.
+
+\section{Banco de registradores}
+\input{capitulos/tabelas/reg_bank_escrita.tex}
+\input{capitulos/tabelas/reg_bank_leitura.tex}
+\input{capitulos/tabelas/reg_bank_wr_ena.tex}
+\input{capitulos/tabelas/reg_bank_reset.tex}
+
+\section{Registrador de status}
+\input{capitulos/tabelas/reg_status_escrita.tex}
+\input{capitulos/tabelas/reg_status_enable.tex}
+\input{capitulos/tabelas/reg_status_alu.tex}
+\input{capitulos/tabelas/reg_status_reset.tex}
+
+\section{Pilha}
+\input{capitulos/tabelas/stack_lifo.tex}
+\input{capitulos/tabelas/stack_overflow.tex}
+\input{capitulos/tabelas/stack_push_pop.tex}
+\input{capitulos/tabelas/stack_reset.tex}
+
+\section{Contador de programa}
+\input{capitulos/tabelas/prog_cnt_incremento.tex}
+\input{capitulos/tabelas/prog_cnt_carga.tex}
+\input{capitulos/tabelas/prog_cnt_reset.tex}

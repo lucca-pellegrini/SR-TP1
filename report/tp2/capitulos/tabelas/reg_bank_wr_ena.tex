@@ -1,0 +1,23 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rcccccccp{5.3cm}}
+\caption{Casos de teste de \texttt{reg\_bank\_wr\_ena.vwf}: habilitação da escrita.}
+\label{tab:caso-reg-bank-wr-ena}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{di} & \texttt{a\_sel} & \texttt{b\_sel} & \texttt{wr\_ena} & \texttt{a\_do} & \texttt{b\_do} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{di} & \texttt{a\_sel} & \texttt{b\_sel} & \texttt{wr\_ena} & \texttt{a\_do} & \texttt{b\_do} & Observação \\ \hline \endhead
+0--20 & 0 & 00h & 0 & 0 & 0 & 00h & 00h &  \\
+20--40 & 1 & 11h & 0 & 0 & 1 & 11h & 11h & escreve 11h em R0 \\
+40--60 & 1 & 99h & 0 & 0 & 0 & 11h & 11h & wr\_ena = 0, di = 99h: R0 não muda \\
+60--80 & 1 & 88h & 0 & 0 & 0 & 11h & 11h & di = 88h: R0 continua 11h \\
+80--100 & 1 & 99h & 0 & 0 & 1 & 99h & 99h & wr\_ena = 1: escreve 99h em R0 \\
+100--120 & 1 & 00h & 0 & 0 & 0 & 99h & 99h & wr\_ena = 0 \\
+120--132 & 1 & 66h & 1 & 1 & 0 & 00h & 00h & prepara R1 = 66h, mas sem escrever \\
+132--138 & 1 & 66h & 1 & 1 & 1 & 00h & 00h & pulso de wr\_ena entre duas bordas (12 a 18 ns): não escreve \\
+138--148 & 1 & 66h & 1 & 1 & 0 & 00h & 00h & fim do pulso \\
+148--152 & 1 & 66h & 1 & 1 & 1 & 66h & 66h & pulso de wr\_ena sobre a borda de subida (8 a 12 ns): escreve 66h em R1 \\
+152--160 & 1 & 66h & 1 & 1 & 0 & 66h & 66h & fim do pulso \\
+160--180 & 1 & 66h & 1 & 0 & 0 & 66h & 99h & lê R1 e R0 \\
+180--200 & 1 & 66h & 0 & 1 & 0 & 99h & 66h & lê R0 e R1 \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

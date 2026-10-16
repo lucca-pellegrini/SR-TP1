@@ -1,0 +1,24 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rccccccp{4.2cm}}
+\caption{Casos de teste de \texttt{prog\_cnt\_reset.vwf}: reset assíncrono.}
+\label{tab:caso-prog-cnt-reset}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{pc\_ctrl} & \texttt{new\_pc\_in} & \texttt{from\_stack} & \texttt{next\_pc\_out} & \texttt{pc\_out} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{pc\_ctrl} & \texttt{new\_pc\_in} & \texttt{from\_stack} & \texttt{next\_pc\_out} & \texttt{pc\_out} & Observação \\ \hline \endhead
+0--20 & 0 & 00 & 1234 & 0 & 0 & 0 &  \\
+20--40 & 1 & 10 & 1234 & 0 & 1234 & 1234 & carrega 1234 \\
+40--60 & 1 & 11 & 1234 & 0 & 1236 & 1235 & incrementa \\
+60--65 & 1 & 11 & 1234 & 0 & 1236 & 1235 & incrementa \\
+65--80 & 0 & 11 & 1234 & 0 & 1 & 0 & reset assíncrono, fora de qualquer borda \\
+80--100 & 0 & 11 & 1234 & 0 & 1 & 0 & ainda em reset; incremento sobre a borda: não conta \\
+100--123 & 0 & 10 & 1234 & 0 & 1234 & 0 & ainda em reset; carga sobre a borda: não carrega \\
+123--140 & 1 & 10 & 1234 & 0 & 1234 & 1234 & solta o reset \\
+140--160 & 1 & 11 & 1234 & 0 & 1236 & 1235 & incrementa (a borda desse ciclo já conta) \\
+160--192 & 1 & 11 & 1234 & 0 & 1238 & 1237 & incrementa \\
+192--195 & 0 & 11 & 1234 & 0 & 1 & 0 & pulso de reset de 3 ns, sem borda \\
+195--200 & 1 & 11 & 1234 & 0 & 1 & 0 & fim do pulso \\
+200--220 & 1 & 11 & 1234 & 0 & 2 & 1 & incrementa a partir de 0 \\
+220--240 & 1 & 00 & 1234 & 0 & 1 & 1 & mantém \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

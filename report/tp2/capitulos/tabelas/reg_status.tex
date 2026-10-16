@@ -1,0 +1,21 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rccccp{4.4cm}}
+\caption{Casos de teste de \texttt{reg\_status.vwf}: visão geral.}
+\label{tab:caso-reg-status}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{status\_reg\_in} & \texttt{status\_reg\_wr\_ena} & \texttt{status\_reg\_out} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{status\_reg\_in} & \texttt{status\_reg\_wr\_ena} & \texttt{status\_reg\_out} & Observação \\ \hline \endhead
+0--20 & 0 & 00000 & 00000 & 00000 &  \\
+20--40 & 1 & 11111 & 11111 & 11111 & solta o reset; escreve 11111 (todos habilitados) \\
+40--60 & 1 & 00000 & 00001 & 11110 & zera só RN \\
+60--80 & 1 & 00000 & 00010 & 11100 & zera só RV \\
+80--100 & 1 & 00000 & 00100 & 11000 & zera só RZ \\
+100--120 & 1 & 00000 & 01000 & 10000 & zera só RH \\
+120--140 & 1 & 00000 & 10000 & 00000 & zera só RC \\
+140--160 & 1 & 10101 & 11111 & 10101 & escreve 10101 em todos \\
+160--180 & 1 & 11111 & 01010 & 11111 & in = 11111, mas só RV e RH habilitados \\
+180--205 & 1 & 00000 & 00000 & 11111 & ninguém habilitado: mantém \\
+205--220 & 0 & 00000 & 00000 & 00000 & reset assíncrono \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

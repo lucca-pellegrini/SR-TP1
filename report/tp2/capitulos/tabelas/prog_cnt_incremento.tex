@@ -1,0 +1,21 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rccccccp{4.2cm}}
+\caption{Casos de teste de \texttt{prog\_cnt\_incremento.vwf}: incremento e volta módulo 2048.}
+\label{tab:caso-prog-cnt-incremento}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{pc\_ctrl} & \texttt{new\_pc\_in} & \texttt{from\_stack} & \texttt{next\_pc\_out} & \texttt{pc\_out} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{pc\_ctrl} & \texttt{new\_pc\_in} & \texttt{from\_stack} & \texttt{next\_pc\_out} & \texttt{pc\_out} & Observação \\ \hline \endhead
+0--20 & 0 & 00 & 0 & 0 & 0 & 0 &  \\
+20--40 & 1 & 10 & 2045 & 0 & 2045 & 2045 & carrega 2045 \\
+40--60 & 1 & 11 & 2045 & 0 & 2047 & 2046 & incrementa \\
+60--80 & 1 & 11 & 2045 & 0 & 0 & 2047 & incrementa \\
+80--100 & 1 & 11 & 2045 & 0 & 1 & 0 & incrementa \\
+100--120 & 1 & 11 & 2045 & 0 & 2 & 1 & incrementa \\
+120--140 & 1 & 11 & 2045 & 0 & 3 & 2 & incrementa \\
+140--160 & 1 & 11 & 2045 & 0 & 4 & 3 & incrementa \\
+160--180 & 1 & 00 & 2045 & 0 & 3 & 3 & mantém \\
+180--200 & 1 & 00 & 2045 & 0 & 3 & 3 & mantém \\
+200--220 & 1 & 00 & 2045 & 0 & 3 & 3 & mantém \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

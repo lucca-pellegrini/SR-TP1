@@ -1,0 +1,24 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rcccccccp{5.3cm}}
+\caption{Casos de teste de \texttt{reg\_bank\_reset.vwf}: reset assíncrono.}
+\label{tab:caso-reg-bank-reset}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{di} & \texttt{a\_sel} & \texttt{b\_sel} & \texttt{wr\_ena} & \texttt{a\_do} & \texttt{b\_do} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{di} & \texttt{a\_sel} & \texttt{b\_sel} & \texttt{wr\_ena} & \texttt{a\_do} & \texttt{b\_do} & Observação \\ \hline \endhead
+0--20 & 0 & 00h & 0 & 0 & 0 & 00h & 00h &  \\
+20--40 & 1 & C1h & 0 & 0 & 1 & C1h & C1h & escreve C1h em R0 \\
+40--60 & 1 & C2h & 1 & 0 & 1 & C2h & C1h & escreve C2h em R1 \\
+60--80 & 1 & C3h & 2 & 0 & 1 & C3h & C1h & escreve C3h em R2 \\
+80--85 & 1 & C3h & 0 & 1 & 0 & C1h & C2h & a\_do = R0, b\_do = R1; wr\_ena = 0 \\
+85--100 & 0 & C3h & 0 & 1 & 0 & 00h & 00h & reset assíncrono (fora de qualquer borda): tudo vai a 0 \\
+100--123 & 0 & EEh & 1 & 1 & 1 & 00h & 00h & ainda em reset; wr\_ena = 1 sobre a borda: não escreve \\
+123--140 & 1 & EEh & 1 & 1 & 1 & EEh & EEh & solta o reset (a borda em 130 ns já pode escrever) \\
+140--160 & 1 & EEh & 0 & 1 & 0 & 00h & EEh & wr\_ena = 0 \\
+160--180 & 1 & D1h & 0 & 1 & 1 & D1h & EEh & escreve D1h em R0 \\
+180--212 & 1 & D1h & 0 & 1 & 0 & D1h & EEh & wr\_ena = 0 \\
+212--215 & 0 & D1h & 0 & 1 & 0 & 00h & 00h & pulso de reset de 3 ns, sem borda: ainda zera \\
+215--220 & 1 & D1h & 0 & 1 & 0 & 00h & 00h & fim do pulso \\
+220--240 & 1 & D1h & 0 & 1 & 0 & 00h & 00h & tudo em 0 \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}

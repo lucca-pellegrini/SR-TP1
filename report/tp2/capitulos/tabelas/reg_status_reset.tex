@@ -1,0 +1,21 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rccccp{4.4cm}}
+\caption{Casos de teste de \texttt{reg\_status\_reset.vwf}: reset assíncrono.}
+\label{tab:caso-reg-status-reset}\\
+\hline $t$ (ns) & \texttt{nrst} & \texttt{status\_reg\_in} & \texttt{status\_reg\_wr\_ena} & \texttt{status\_reg\_out} & Observação \\ \hline \endfirsthead
+\hline $t$ (ns) & \texttt{nrst} & \texttt{status\_reg\_in} & \texttt{status\_reg\_wr\_ena} & \texttt{status\_reg\_out} & Observação \\ \hline \endhead
+0--20 & 0 & 00000 & 00000 & 00000 &  \\
+20--40 & 1 & 11111 & 11111 & 11111 & escreve 11111 \\
+40--65 & 1 & 11111 & 00000 & 11111 & mantém \\
+65--80 & 0 & 11111 & 00000 & 00000 & reset assíncrono, fora de qualquer borda \\
+80--103 & 0 & 11111 & 11111 & 00000 & ainda em reset; escrita habilitada sobre a borda: não escreve \\
+103--120 & 1 & 11111 & 11111 & 11111 & solta o reset \\
+120--140 & 1 & 10101 & 11111 & 10101 & escreve 10101 (a borda desse ciclo já escreve) \\
+140--172 & 1 & 10101 & 00000 & 10101 & mantém \\
+172--175 & 0 & 10101 & 00000 & 00000 & pulso de reset de 3 ns, sem borda \\
+175--180 & 1 & 10101 & 00000 & 00000 & fim do pulso \\
+180--200 & 1 & 10101 & 00000 & 00000 & tudo em 0 \\
+\hline
+\end{longtable}}
+\vspace{-0.9cm}
+\fonte{Autoria própria. Saídas do fim de cada intervalo, conforme o modelo de referência e a simulação do Quartus II.}
