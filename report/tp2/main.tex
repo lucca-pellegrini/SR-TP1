@@ -1,4 +1,3 @@
-
 %% This work may be distributed and/or modified under the conditions of the LaTeX Project Public License, either version 1.3 of this license or (at your option) any later version. The latest version of this license is in http://www.latex-project.org/lppl.txt and version 1.3 or later is part of all distributions of LaTeX version 2005/12/01 or later. This work has the LPPL maintenance status `maintained'. Further information about abnTeX2 are available on https://github.com/abntex/abntex2 | https://www.abntex.net.br/
 %%
 %% The Current maintainer of this template is Geraldo Pereira de M. Jr. 
@@ -9,17 +8,23 @@
 	oneside,			% impressão em um lado da folha (relatório entregue em PDF)
 	a4paper,			% tamanho do papel.
 	sumario = tradicional,
-	% -- opções da classe abntex2 --
-	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
-	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
-	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
-	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
-	% -- opções do pacote babel --
 	english,			% idioma adicional para hifenização
 	brazilian			% o último idioma é o principal do documento
 	]{abntex2}
 \input{config/packages}
 \input{config/pdfconfig}
+
+% Ajustes de espaçamento para evitar páginas quase vazias mantendo todas as figuras e tabelas
+\linespread{1.15}
+\renewcommand{\baselinestretch}{1.15}
+\setlength{\parskip}{0.12cm}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\LTpre}{6pt}
+\setlength{\LTpost}{22pt}
+\setlength\bibitemsep{1.5\itemsep}
+\firmlists
 
 \usetikzlibrary{calc,arrows.meta}
 
@@ -38,18 +43,20 @@
   style=tango,
   bgcolor=codebg,
   fontsize=\scriptsize,
+  baselinestretch=0.88,
   linenos,
   numbersep=5pt,
   breaklines,
   tabsize=4,
   frame=single,
-  framesep=4pt,
+  framesep=2pt,
   rulecolor=codeborder
 }
 % \blocovhdl{legenda}{rótulo}{projeto}{arquivo}: aponta para
 % ../../project/<projeto>/<arquivo>, sem copiar o código para o relatório.
 \newcommand{\blocovhdl}[4]{%
-  \begin{codigo}
+  \begin{codigo}[!htb]
+    \SingleSpacing
     \caption{#1}\label{#2}
     \inputminted{vhdl}{../../project/#3/#4}
     \fonte{Autoria própria (arquivo \texttt{\detokenize{project/#3/#4}}).}
@@ -64,13 +71,9 @@
 \newcommand{\psaida}[3]{\draw[->,#3] ($(bloco.east)+(0,#1)$) -- ($(bloco.east)+(\fio,#1)$);
   \node[port, anchor=west] at ($(bloco.east)+(\fio+0.1,#1)$) {#2};}
 
-% ---
-% Pacote que deixa vários comandos do LaTex comumente usados em português. Pode ver exemplos na Introdução. Contudo pode continuar a usar os comandos do LaTex normalmente se preferir.
-% ---
 \usepackage{PTLatexCommands}
-
-% Permite quebrar palavras em \texttt e folga extra para evitar linhas estouradas
 \usepackage[htt]{hyphenat}
+\usepackage{placeins}
 \usepackage{needspace}
 \setlength{\emergencystretch}{2em}
 
@@ -78,153 +81,516 @@
 % Informações de dados para CAPA e FOLHA DE ROSTO
 % ---
 \titulo{Banco de Registradores, Registrador de Status, Pilha e Contador de Programa em VHDL}
-\autor{Ariel Inácio Jordão Coelho\break Lucca Mendes Alves Pellegrini} % TODO: substituir pelo seu nome
+\autor{Ariel Inácio Jordão Coelho\break Lucca Mendes Alves Pellegrini}
 \local{Belo Horizonte}
 \data{2026}
-\orientador{Francisco Manoel Pinto Garcia} % TODO: substituir
+\orientador{Francisco Manoel Pinto Garcia}
 \instituicao{%
   Pontifícia Universidade Católica de Minas Gerais
   \par
   Engenharia de Computação}
 \tipotrabalho{Relatório Técnico (Graduação)}
-% O preambulo deve conter o tipo do trabalho, o objetivo, 
-% o nome da instituição e a área de concentração 
 \preambulo{Relatório técnico do Segundo Trabalho Prático (TP2), apresentado à
 disciplina de Sistemas Reconfiguráveis do Curso de
 Engenharia de Computação da Pontifícia Universidade Católica de Minas Gerais.\linebreak
 \textbf{Área de concentração}: Sistemas Digitais e Reconfiguráveis \newline
 \textbf{Professor}: \imprimirorientador}
 
-% ---
-% compila o indice
-% ---
 \makeindex
-% ---
 
-% ----
-% Início do documento
-% ----
 \begin{document}
 \selectlanguage{brazilian}
-% Retira espaço extra obsoleto entre as frases.
 \frenchspacing 
-%spaçamento 
+
 %----------------------------------------------------
 % ELEMENTOS PRÉ-TEXTUAIS
 %----------------------------------------------------
 \pretextual
-%---
-% Capa
-%---
 \imprimircapa 
-%---
-% Folha de rosto
-% (sem ficha catalográfica neste relatório)
-%---
-
 \imprimirfolhaderosto
 
-%---
-% Inserir a ficha bibliografica
-%---
-% Isto é um exemplo de Ficha Catalográfica, ou ``Dados internacionais de
-% catalogação-na-publicação''. Você pode utilizar este modelo como referência. 
-% Porém, provavelmente a biblioteca da sua universidade lhe fornecerá um PDF
-% com a ficha catalográfica definitiva após a defesa do trabalho. Quando estiver
-% com o documento, salve-o como PDF no diretório do seu projeto e substitua todo
-% o conteúdo de implementação deste arquivo pelo comando abaixo:
-% \input{capitulos/ficha.tex}
-%---
-%Inserir errata
-%---
-%\input{capitulos/errata.tex}
-%---
-% Inserir folha de aprovação
-%---
-% \input{capitulos/aprov.tex} 
-%---
-% Dedicatória
-%---
-% \input{capitulos/dedi.tex}
-%---
 % RESUMOS
-%---
-\input{capitulos/resumos.tex}
-%---
-%LISTAS
-%---
-\input{capitulos/Listas.tex}
-%---
-%inserir o sumario
-%---
-\input{capitulos/sum.tex}
+\begin{resumo}
+Este relatório apresenta o projeto em VHDL de quatro blocos sequenciais independentes para o caminho de dados de um processador simples: banco de quatro registradores de 8 bits com leitura dupla assíncrona (\texttt{reg\_bank}), registrador de status de cinco \textit{flags} com habilitação individual (\texttt{reg\_status}), pilha LIFO de oito posições de 11 bits (\texttt{stack}) e contador de programa de 11 bits com carga síncrona (\texttt{prog\_cnt}). Todos utilizam portas \texttt{std\_logic}/\texttt{std\_logic\_vector} e \textit{reset} assíncrono prioritário. A lógica combinacional é descrita de forma concorrente e os elementos de memória usam \texttt{process}. Apresentam-se a especificação, a síntese RTL, o código-fonte e os resultados da simulação funcional no Quartus II.
+
+\textbf{Palavras-chave}: Banco de registradores. Pilha. Contador de programa. VHDL. Lógica sequencial. Quartus.
+\end{resumo}
+
+\begin{resumo}[Abstract]
+\begin{otherlanguage*}{english}
+This report presents four independent sequential blocks written in VHDL for a simple processor datapath: an 8-bit four-register file with dual asynchronous read ports (\texttt{reg\_bank}), a five-flag status register with individual write enables (\texttt{reg\_status}), an eight-entry 11-bit LIFO stack (\texttt{stack}), and an 11-bit synchronous-load program counter (\texttt{prog\_cnt}). All blocks feature asynchronous priority reset and \texttt{std\_logic}/\texttt{std\_logic\_vector} ports, combining concurrent combinational logic with edge-triggered processes. Specifications, RTL netlists, source code, and Quartus II functional simulations are presented.
+
+\vspace{\onelineskip}
+\noindent\textbf{Keywords}: Register file. Stack. Program counter. VHDL. Sequential logic. Quartus.
+\end{otherlanguage*}
+\end{resumo}
+
+% LISTAS
+{\SingleSpacing
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\vspace{1cm}
+\pdfbookmark[0]{\listofcodigosname}{loc}
+\listofcodigos*
+\cleardoublepage
+\pdfbookmark[0]{\listtablename}{lot}
+\listoftables*
+\cleardoublepage
+\begin{siglas}
+  \item[ALU] \textit{Arithmetic Logic Unit} (unidade lógica e aritmética)
+  \item[EDA] \textit{Electronic Design Automation}
+  \item[FF] \textit{Flip-Flop}
+  \item[FPGA] \textit{Field-Programmable Gate Array}
+  \item[HDL] \textit{Hardware Description Language}
+  \item[IEEE] \textit{Institute of Electrical and Electronics Engineers}
+  \item[LE] \textit{Logic Element}
+  \item[LIFO] \textit{Last In, First Out}
+  \item[LUT] \textit{Look-Up Table}
+  \item[PC] \textit{Program Counter} (contador de programa)
+  \item[RTL] \textit{Register Transfer Level}
+  \item[SDC] \textit{Synopsys Design Constraints}
+  \item[VHDL] \textit{VHSIC Hardware Description Language}
+  \item[VHSIC] \textit{Very High Speed Integrated Circuit}
+  \item[VWF] \textit{Vector Waveform File}
+\end{siglas}
+\cleardoublepage
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage}
 
 %-----------------------------------------------------
 % ELEMENTOS TEXTUAIS
 %-----------------------------------------------------
-
 \textual
 
-%-----------------------------------------------------
-%-----------------------------------------------------
-\input{capitulos/introducao.tex}
-%-----------------------------------------------------
-\input{capitulos/cap2.tex}
-%-----------------------------------------------------
-\input{capitulos/reg_bank.tex}
-%-----------------------------------------------------
-\input{capitulos/reg_status.tex}
-%-----------------------------------------------------
-\input{capitulos/stack.tex}
-%-----------------------------------------------------
-\input{capitulos/prog_cnt.tex}
-%-----------------------------------------------------
-\input{capitulos/conclusao.tex}
-%-----------------------------------------------------
+%=====================================================
+\chapter{Introdução}
+\label{cap:introducao}
+
+Este trabalho projeta em VHDL quatro blocos sequenciais fundamentais para um processador simples \cite{ashenden2008,pedroni2010}: banco de registradores (\texttt{reg\_bank}), registrador de status (\texttt{reg\_status}), pilha (\texttt{stack}) e contador de programa (\texttt{prog\_cnt}). Eles complementam a ALU de 8 bits do TP1, cujas \textit{flags} alimentam o registrador de status. Cada bloco constitui um projeto independente no Quartus II; a interconexão entre o contador de programa e a pilha será realizada no TP4 \cite{tp2}.
+
+\section{Objetivos, ferramentas e restrições}
+
+Os objetivos específicos do projeto são:
+\begin{itemize}
+  \item descrever \texttt{reg\_bank}, \texttt{reg\_status}, \texttt{stack} e \texttt{prog\_cnt} em VHDL utilizando exclusivamente portas \texttt{std\_logic} e \texttt{std\_logic\_vector};
+  \item implementar \textit{reset} assíncrono ativo em nível baixo com prioridade total e escrita síncrona na borda de subida do clock (\texttt{RISING\_EDGE}) sem inferir \textit{latches} \cite{aula7,aula8};
+  \item definir casos de teste e validar cada módulo por simulação funcional (\texttt{.vwf}).
+\end{itemize}
+
+Os projetos seguem o formato do Quartus II 9.1sp2 \cite{tp2} e foram sintetizados e simulados no Quartus II 13.0sp1 para o FPGA Cyclone II EP2C35F672C6 (placa DE2). Toda a lógica combinacional é escrita de forma concorrente (\texttt{with-select}, \texttt{when-else}, operadores), reservando-se o bloco \texttt{process} aos elementos de memória sequencial. Os códigos-fonte incluídos no relatório apontam diretamente para os arquivos \texttt{.vhd} do repositório.
+
+O Capítulo~\ref{cap:fundamentos} sintetiza a fundamentação teórica; os Capítulos~\ref{cap:reg_bank} a \ref{cap:prog_cnt} detalham a especificação, a implementação RTL e a simulação de cada bloco; o Capítulo~\ref{cap:conclusao} apresenta a síntese de recursos e conclusões; e os Apêndices~\ref{ap:arquivos} e \ref{ap:tabelas} reúnem a estrutura de arquivos e as tabelas das demais formas de onda.
+
+%=====================================================
+\chapter{Fundamentação teórica}
+\label{cap:fundamentos}
+
+\section{Lógica sequencial, \textit{flip-flops} e \textit{latches}}
+
+Diferentemente da lógica combinacional, a lógica sequencial depende do estado anterior armazenado em elementos de memória \cite{aula4}. Em VHDL, atribuições fora de um \texttt{PROCESS} são concorrentes, enquanto instruções dentro de um \texttt{PROCESS} executam sequencialmente quando acionadas pela lista de sensibilidade \cite{aula8}.
+
+O elemento básico de memória síncrona é o \textit{flip-flop} (FF) tipo D, que amostra a entrada na borda ativa do clock, respeitando os tempos de \textit{setup} ($t_{su}$), \textit{hold} ($t_h$) e propagação ($t_{CQ}$) \cite{aula1}. A folga temporal (\textit{slack}) entre dois FFs é dada por:
+\begin{equation}
+  \text{slack}_{\text{setup}} = T_{\text{clk}} - t_{CQ} - t_{\text{logic}} - t_{su} - t_{\text{skew}}.
+  \label{eq:slack}
+\end{equation}
+Nos blocos projetados, cada registrador possui \textit{reset} assíncrono ativo em nível baixo (\texttt{nrst}), testado prioritariamente no \texttt{IF}, seguido pelo \texttt{ELSIF RISING\_EDGE(clk\_in)} com habilitação de escrita (\textit{clock enable}) \cite{aula8}. Já em lógica combinacional, todas as saídas recebem atribuição completa (\texttt{ELSE} / \texttt{WHEN OTHERS}) para evitar a inferência de \textit{latches} sensíveis a nível \cite{aula7}.
+
+\section{\textit{Arrays}, pilhas e contadores em VHDL}
+
+O uso de \textit{arrays} de \texttt{std\_logic\_vector} permite indexar conjuntos de registradores de forma compacta \cite{aula6}: a indexação variável gera multiplexadores na leitura e decodificadores na escrita, enquanto agregados \texttt{(OTHERS => (OTHERS => '0'))} zeram toda a estrutura. Na pilha LIFO (\textit{last in, first out}) de profundidade fixa, atribuições de fatias (\textit{slices}) deslocam todas as palavras simultaneamente em operações de \textit{push} (inserção no topo) e \textit{pop} (remoção com injeção de zeros no fundo). No contador síncrono de $n=11$ bits, o pacote \texttt{std\_logic\_unsigned} realiza a soma módulo $2^{11}=2048$ descartando o \textit{carry} final, o que separa o cálculo combinacional do próximo estado (\texttt{next\_pc}) da atualização síncrona dos FFs \cite{aula6}.
+
+\section{Verificação por simulação}
+
+A verificação funcional valida o comportamento lógico assumindo comutação ideal, enquanto a análise estática (TimeQuest) verifica os atrasos físicos para o clock de 50\,MHz da DE2 \cite{aula2}. Nos arquivos \texttt{.vwf}, adotou-se período de clock de 20\,ns (bordas de subida em 10, 30, 50\,ns\dots) com transições de entrada nas bordas de descida (múltiplos de 20\,ns), exceto nos testes específicos de \textit{reset} assíncrono, leitura combinacional e pulsos entre bordas.
+
+%=====================================================
+\chapter{Banco de registradores (\texttt{reg\_bank})}
+\label{cap:reg_bank}
+
+\section{Especificação}
+
+O módulo \texttt{reg\_bank} contém quatro registradores de 8 bits (R0 a R3) \cite{tp2}. Possui duas portas de leitura assíncrona simultânea (\texttt{a\_do} e \texttt{b\_do}), selecionadas por \texttt{a\_sel} e \texttt{b\_sel}, e uma porta de escrita síncrona na borda de subida de \texttt{clk\_in}, que grava \texttt{di} no registrador selecionado por \texttt{a\_sel} quando \texttt{wr\_ena = '1'}. O \textit{reset} assíncrono \texttt{nrst} (ativo em nível baixo) zera R0--R3 com prioridade total. A Figura~\ref{fig:bloco-reg-bank} e o Quadro~\ref{quad:portas-reg-bank} detalham a interface.
+
+\begin{figure}[!htb]
+\caption{Diagrama de blocos do banco de registradores.}\label{fig:bloco-reg-bank}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]}]
+  \node[draw, minimum width=3.0cm, minimum height=4.4cm, font=\large\bfseries] (bloco) {reg\_bank};
+  \pentrada{1.75}{nrst}{}
+  \pentrada{1.05}{clk\_in}{}
+  \pentrada{0.35}{di[7..0]}{line width=1.2pt}
+  \pentrada{-0.35}{a\_sel[1..0]}{line width=1.2pt}
+  \pentrada{-1.05}{b\_sel[1..0]}{line width=1.2pt}
+  \pentrada{-1.75}{wr\_ena}{}
+  \psaida{0.7}{a\_do[7..0]}{line width=1.2pt}
+  \psaida{-0.7}{b\_do[7..0]}{line width=1.2pt}
+\end{tikzpicture}
+\fonte{Elaborada pelos autores, com base em \textcite{tp2}.}
+\end{figure}
+
+\begin{quadro}[!htb]
+  \SingleSpacing
+  \caption{Portas do banco de registradores.}
+  \label{quad:portas-reg-bank}
+  \centering
+  \begin{tabular}{lcp{9cm}}
+    \hline
+    Porta & Direção & Descrição \\ \hline
+    \texttt{nrst} & entrada & \textit{Reset} assíncrono (ativo baixo); zera R0 a R3 com prioridade \\
+    \texttt{clk\_in} & entrada & Clock; escrita na borda de subida \\
+    \texttt{di[7..0]} & entrada & Dado de entrada para escrita \\
+    \texttt{a\_sel[1..0]} & entrada & Seleciona o registrador lido em \texttt{a\_do} e o destino da escrita \\
+    \texttt{b\_sel[1..0]} & entrada & Seleciona o registrador lido em \texttt{b\_do} \\
+    \texttt{wr\_ena} & entrada & Habilitação de escrita (ativa em nível alto) \\
+    \texttt{a\_do[7..0]} & saída & Leitura combinacional do registrador apontado por \texttt{a\_sel} \\
+    \texttt{b\_do[7..0]} & saída & Leitura combinacional do registrador apontado por \texttt{b\_sel} \\ \hline
+  \end{tabular}
+  \fonte{Adaptado de \textcite{tp2}.}
+\end{quadro}
+
+\section{Implementação}
+
+Os quatro registradores são modelados como um \textit{array} \texttt{r(0 TO 3)} de vetores de 8 bits, indexado pelos inteiros \texttt{a\_idx} e \texttt{b\_idx} (\texttt{RANGE 0 TO 3}) convertidos de \texttt{a\_sel} e \texttt{b\_sel}. As leituras \texttt{a\_do <= r(a\_idx)} e \texttt{b\_do <= r(b\_idx)} são concorrentes e independentes do clock. A escrita utiliza um \texttt{process(nrst, clk\_in)} que prioriza \texttt{nrst = '0'} para zerar o \textit{array} e, na borda de subida com \texttt{wr\_ena = '1'}, atualiza \texttt{r(a\_idx) <= di}. A Figura~\ref{fig:rtl-reg-bank} exibe o circuito RTL resultante (quatro blocos \texttt{\$adffe}, decodificador de escrita e dois multiplexadores 4:1 \texttt{\$bmux}), e o Código~\ref{lst:reg-bank} traz a descrição VHDL.
+
+\begin{figure}[!htb]
+  \centering
+  \caption{Circuito do banco de registradores em nível RTL.}
+  \label{fig:rtl-reg-bank}
+  \includegraphics[width=\textwidth, height=0.45\textheight, keepaspectratio]{reg_bank_rtl.pdf}
+  \fonte{Elaborado a partir do site RapidRTL, com base no arquivo \texttt{project/reg\_bank/reg\_bank.vhd}.}
+\end{figure}
+
+\blocovhdl{Descrição VHDL do banco de registradores.}{lst:reg-bank}{reg_bank}{reg_bank.vhd}
+
+\section{Simulação e resultados}
+
+A validação utilizou cinco arquivos \texttt{.vwf} (clock de 20\,ns): \texttt{reg\_bank.vwf} (visão geral), \texttt{reg\_bank\_escrita.vwf} (escrita e sobrescrita), \texttt{reg\_bank\_leitura.vwf} (16 combinações de leitura assíncrona), \texttt{reg\_bank\_wr\_ena.vwf} (pulsos de habilitação entre bordas e na borda) e \texttt{reg\_bank\_reset.vwf} (prioridade do reset). A Figura~\ref{fig:sim-reg-bank} e a Tabela~\ref{tab:caso-reg-bank} mostram a simulação principal; as demais tabelas estão no Apêndice~\ref{ap:tabelas}. Os resultados confirmam a escrita síncrona em R0--R3 (30--90\,ns), a leitura dupla assíncrona independente de \texttt{di} (100--160\,ns), o bloqueio com \texttt{wr\_ena = '0'} e a atuação imediata do \textit{reset} assíncrono em 205\,ns.
+
+\begin{figure}[!htb]
+  \centering
+  \caption{Simulação funcional de \texttt{reg\_bank.vwf} (visão geral).}
+  \label{fig:sim-reg-bank}
+  \includegraphics[width=\textwidth]{../../project/reg_bank/reg_bank_simulation.png}
+  \fonte{Autoria própria (Quartus II).}
+\end{figure}
+
+{\SingleSpacing\FloatBarrier\input{capitulos/tabelas/reg_bank.tex}}
+
+%=====================================================
+\chapter{Registrador de status (\texttt{reg\_status})}
+\label{cap:reg_status}
+
+\section{Especificação}
+
+O \texttt{reg\_status} reúne cinco registradores de 1 bit independentes (RN, RV, RZ, RH e RC) para armazenar as \textit{flags} da ALU do TP1 \cite{tp2}. Cada bit de \texttt{status\_reg\_out} é atualizado na borda de subida de \texttt{clk\_in} apenas se o bit correspondente de \texttt{status\_reg\_wr\_ena} estiver em \texttt{'1'}. O \textit{reset} assíncrono (\texttt{nrst = '0'}) zera os cinco bits com prioridade, e a saída permanece continuamente ativa. A Figura~\ref{fig:bloco-reg-status} e os Quadros~\ref{quad:portas-reg-status} e \ref{qua:flags-alu} definem a interface e o mapeamento das \textit{flags}.
+
+\begin{figure}[!htb]
+\caption{Diagrama de blocos do registrador de status.}\label{fig:bloco-reg-status}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]}]
+  \renewcommand{\fio}{0.8}
+  \node[draw, minimum width=3.2cm, minimum height=3.2cm, font=\large\bfseries] (bloco) {reg\_status};
+  \pentrada{1.2}{nrst}{}
+  \pentrada{0.4}{clk\_in}{}
+  \pentrada{-0.4}{status\_reg\_in[4..0]}{line width=1.2pt}
+  \pentrada{-1.2}{status\_reg\_wr\_ena[4..0]}{line width=1.2pt}
+  \psaida{0.0}{status\_reg\_out[4..0]}{line width=1.2pt}
+\end{tikzpicture}
+\fonte{Elaborada pelos autores, com base em \textcite{tp2}.}
+\end{figure}
+
+\begin{quadro}[!htb]
+  \SingleSpacing
+  \caption{Portas do registrador de status.}
+  \label{quad:portas-reg-status}
+  \centering
+  \begin{tabular}{lcp{7.4cm}}
+    \hline
+    Porta & Direção & Descrição \\ \hline
+    \texttt{nrst} & entrada & \textit{Reset} assíncrono (ativo baixo); zera os cinco registradores \\
+    \texttt{clk\_in} & entrada & Clock; escrita na borda de subida \\
+    \texttt{status\_reg\_in[4..0]} & entrada & Dados: [0] RN, [1] RV, [2] RZ, [3] RH, [4] RC \\
+    \texttt{status\_reg\_wr\_ena[4..0]} & entrada & Habilitação individual por bit (ativa em nível alto) \\
+    \texttt{status\_reg\_out[4..0]} & saída & Conteúdo dos cinco registradores \\ \hline
+  \end{tabular}
+  \fonte{Adaptado de \textcite{tp2}.}
+\end{quadro}
+
+\begin{quadro}[!htb]
+  \SingleSpacing
+  \caption{Correspondência entre as \textit{flags} da ALU e os registradores de status.}
+  \label{qua:flags-alu}
+  \centering
+  \begin{tabular}{cll}
+    \hline
+    Bit & Registrador & \textit{Flag} da ALU (\texttt{flags\_out}) \\ \hline
+    0 & RN & \textit{negative} (\texttt{n\_flag}) \\
+    1 & RV & \textit{overflow} (\texttt{v\_flag}) \\
+    2 & RZ & \textit{zero} (\texttt{z\_flag}) \\
+    3 & RH & \textit{half carry/borrow} (\texttt{h\_flag}) \\
+    4 & RC & \textit{carry/borrow} (\texttt{c\_flag}) \\ \hline
+  \end{tabular}
+  \fonte{Adaptado de \textcite{tp2}.}
+\end{quadro}
+
+\section{Implementação}
+
+O próximo estado de cada bit é calculado concorrentemente pela expressão vetorial \texttt{(entrada AND ena) OR (estado AND NOT ena)}, implementando cinco multiplexadores 2:1 paralelos sem necessidade de múltiplos \texttt{IF}s. O \texttt{process(nrst, clk\_in)} zera o registrador de 5 bits quando \texttt{nrst = '0'} ou carrega o próximo estado na borda de subida. A Figura~\ref{fig:rtl-reg-status} mostra a síntese RTL (5 FFs \texttt{\$adff} e portas de seleção) e o Código~\ref{lst:reg-status} apresenta o VHDL.
+
+\begin{figure}[!htb]
+  \centering
+  \caption{Circuito do registrador de status em nível RTL.}
+  \label{fig:rtl-reg-status}
+  \includegraphics[width=0.85\textwidth, height=0.32\textheight, keepaspectratio]{reg_status_rtl.pdf}
+  \fonte{Elaborado a partir do site RapidRTL, com base no arquivo \texttt{project/reg\_status/reg\_status.vhd}.}
+\end{figure}
+
+\blocovhdl{Descrição VHDL do registrador de status.}{lst:reg-status}{reg_status}{reg_status.vhd}
+
+\section{Simulação e resultados}
+
+Foram simuladas cinco formas de onda: \texttt{reg\_status.vwf} (visão geral), \texttt{reg\_status\_escrita.vwf} (padrões alternados), \texttt{reg\_status\_enable.vwf} (habilitação bit a bit), \texttt{reg\_status\_alu.vwf} (atualização seletiva de \textit{flags} por instrução da ALU) e \texttt{reg\_status\_reset.vwf} (reset assíncrono). A Figura~\ref{fig:sim-reg-status} e a Tabela~\ref{tab:caso-reg-status} ilustram a simulação principal, demonstrando a carga total (\texttt{11111} em 30\,ns), a limpeza individual de cada bit (40--140\,ns), a escrita seletiva apenas nos bits habilitados (140--180\,ns), a retenção com \texttt{wr\_ena = 00000} e o \textit{reset} imediato em 205\,ns.
+
+\begin{figure}[!htb]
+  \centering
+  \caption{Simulação funcional de \texttt{reg\_status.vwf} (visão geral).}
+  \label{fig:sim-reg-status}
+  \includegraphics[width=\textwidth]{../../project/reg_status/reg_status_simulation.png}
+  \fonte{Autoria própria (Quartus II).}
+\end{figure}
+
+{\SingleSpacing\FloatBarrier\input{capitulos/tabelas/reg_status.tex}}
+
+%=====================================================
+\chapter{Pilha (\texttt{stack})}
+\label{cap:stack}
+
+\section{Especificação}
+
+O bloco \texttt{stack} implementa uma pilha LIFO de oito registradores de 11 bits para endereços de retorno do PC \cite{tp2}. Na borda de subida de \texttt{clk\_in}: \texttt{stack\_push = '1'} grava \texttt{stack\_in} no topo (\texttt{r(0)}) e desloca \texttt{r(0..6)} para \texttt{r(1..7)}; \texttt{stack\_pop = '1'} desloca \texttt{r(1..7)} para \texttt{r(0..6)} e insere zero em \texttt{r(7)}. O \textit{push} tem prioridade sobre o \textit{pop}, e \texttt{nrst = '0'} zera toda a pilha assincronamente com prioridade máxima. Mais de oito \textit{pushes} causam descarte do dado mais antigo (\textit{overflow}). A saída \texttt{stack\_out} expõe continuamente o topo (\texttt{r(0)}). A Figura~\ref{fig:bloco-stack} e o Quadro~\ref{quad:portas-stack} resumem o bloco.
+
+\begin{figure}[!htb]
+\caption{Diagrama de blocos da pilha.}\label{fig:bloco-stack}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]}]
+  \renewcommand{\fio}{1.4}
+  \node[draw, minimum width=3.0cm, minimum height=3.4cm, font=\large\bfseries] (bloco) {stack};
+  \pentrada{1.3}{nrst}{}
+  \pentrada{0.65}{clk\_in}{}
+  \pentrada{0}{stack\_in[10..0]}{line width=1.2pt}
+  \pentrada{-0.65}{stack\_push}{}
+  \pentrada{-1.3}{stack\_pop}{}
+  \psaida{0}{stack\_out[10..0]}{line width=1.2pt}
+\end{tikzpicture}
+\fonte{Elaborada pelos autores, com base em \textcite{tp2}.}
+\end{figure}
+
+\begin{quadro}[!htb]
+  \SingleSpacing
+  \caption{Portas da pilha.}
+  \label{quad:portas-stack}
+  \centering
+  \begin{tabular}{lcp{9cm}}
+    \hline
+    Porta & Direção & Descrição \\ \hline
+    \texttt{nrst} & entrada & \textit{Reset} assíncrono (ativo baixo); zera as oito posições \\
+    \texttt{clk\_in} & entrada & Clock; \textit{push} e \textit{pop} na borda de subida \\
+    \texttt{stack\_in[10..0]} & entrada & Endereço a ser empilhado \\
+    \texttt{stack\_push} & entrada & Habilita o \textit{push} (ativo alto; prioritário sobre \textit{pop}) \\
+    \texttt{stack\_pop} & entrada & Habilita o \textit{pop} (ativo alto) \\
+    \texttt{stack\_out[10..0]} & saída & Topo da pilha (primeiro registrador), sempre ativo \\ \hline
+  \end{tabular}
+  \fonte{Adaptado de \textcite{tp2}.}
+\end{quadro}
+
+\section{Implementação}
+
+A pilha usa um \textit{array} \texttt{r(0 TO 7)} de 11 bits atualizado em um único \texttt{process(nrst, clk\_in)}. Após o teste prioritário de \texttt{nrst = '0'}, a borda de subida avalia \texttt{IF stack\_push = '1'} antes de \texttt{ELSIF stack\_pop = '1'}, garantindo a prioridade do \textit{push} e realizando o deslocamento em linha única por atribuição de fatias (\texttt{r(1 TO 7) <= r(0 TO 6)} no \textit{push} e \texttt{r(0 TO 6) <= r(1 TO 7)} no \textit{pop}). A Figura~\ref{fig:rtl-stack} mostra o circuito RTL (registrador de 88 bits \texttt{\$adffe} habilitado por \texttt{push OR pop} e dois multiplexadores em cascata), e o Código~\ref{lst:stack} traz o código VHDL.
+
+\begin{figure}[!htb]
+  \centering
+  \caption{Circuito da pilha em nível RTL.}
+  \label{fig:rtl-stack}
+  \includegraphics[width=\textwidth, height=0.32\textheight, keepaspectratio]{stack_rtl.pdf}
+  \fonte{Elaborado a partir do site RapidRTL, com base no arquivo \texttt{project/stack/stack.vhd}.}
+\end{figure}
+
+\blocovhdl{Descrição VHDL da pilha.}{lst:stack}{stack}{stack.vhd}
+
+\section{Simulação e resultados}
+
+O bloco foi verificado em cinco arquivos \texttt{.vwf}: \texttt{stack.vwf} (visão geral), \texttt{stack\_lifo.vwf} (8 \textit{pushes} e 9 \textit{pops}), \texttt{stack\_overflow.vwf} (10 \textit{pushes} com perda dos 2 mais antigos), \texttt{stack\_push\_pop.vwf} (simultaneidade e pulsos entre bordas) e \texttt{stack\_reset.vwf} (reset assíncrono). A Figura~\ref{fig:sim-stack} e a Tabela~\ref{tab:caso-stack} comprovam a ordem LIFO nos \textit{pushes} (100, 200, 300) e \textit{pops} (200, 100), a prioridade do \textit{push} sobre o \textit{pop} em 150\,ns (empilhando 555 sobre 400) e o retorno a zero ao esvaziar a pilha.
+
+\begin{figure}[!htb]
+  \centering
+  \caption{Simulação funcional de \texttt{stack.vwf} (visão geral).}
+  \label{fig:sim-stack}
+  \includegraphics[width=\textwidth]{../../project/stack/stack_simulation.png}
+  \fonte{Autoria própria (Quartus II).}
+\end{figure}
+
+{\SingleSpacing\FloatBarrier\input{capitulos/tabelas/stack.tex}}
+
+%=====================================================
+\chapter{Contador de programa (\texttt{prog\_cnt})}
+\label{cap:prog_cnt}
+
+\section{Especificação}
+
+O \texttt{prog\_cnt} é um contador síncrono de 11 bits (módulo 2048, de 0 a 2047) com \textit{reset} assíncrono prioritário (\texttt{nrst = '0'}) \cite{tp2}. Fornece o valor atual registrado (\texttt{pc\_out}) e o próximo valor combinacional (\texttt{next\_pc\_out}), selecionado por \texttt{pc\_ctrl} conforme o Quadro~\ref{quad:pc-ctrl}. A Figura~\ref{fig:bloco-prog-cnt} e o Quadro~\ref{quad:portas-prog-cnt} detalham suas portas.
+
+\begin{quadro}[!htb]
+  \SingleSpacing
+  \caption{Funções do contador de programa, selecionadas por \texttt{pc\_ctrl}.}
+  \label{quad:pc-ctrl}
+  \centering
+  \begin{tabular}{cl}
+    \hline
+    \texttt{pc\_ctrl} & Função \\ \hline
+    \texttt{00} & Permanece como está \\
+    \texttt{01} & Carrega o topo da pilha (entrada \texttt{from\_stack}) \\
+    \texttt{10} & Carrega um novo valor (entrada \texttt{new\_pc\_in}) \\
+    \texttt{11} & Incrementa o contador ($+1$) \\ \hline
+  \end{tabular}
+  \fonte{Adaptado de \textcite{tp2}.}
+\end{quadro}
+
+\begin{figure}[!htb]
+\caption{Diagrama de blocos do contador de programa.}\label{fig:bloco-prog-cnt}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]}]
+  \renewcommand{\fio}{1.0}
+  \node[draw, minimum width=3.0cm, minimum height=3.8cm, font=\large\bfseries] (bloco) {prog\_cnt};
+  \pentrada{1.5}{nrst}{}
+  \pentrada{0.8}{clk\_in}{}
+  \pentrada{0.1}{pc\_ctrl[1..0]}{line width=1.2pt}
+  \pentrada{-0.6}{new\_pc\_in[10..0]}{line width=1.2pt}
+  \pentrada{-1.3}{from\_stack[10..0]}{line width=1.2pt}
+  \psaida{0.6}{next\_pc\_out[10..0]}{line width=1.2pt}
+  \psaida{-0.6}{pc\_out[10..0]}{line width=1.2pt}
+\end{tikzpicture}
+\fonte{Elaborada pelos autores, com base em \textcite{tp2}.}
+\end{figure}
+
+\begin{quadro}[!htb]
+  \SingleSpacing
+  \caption{Portas do contador de programa.}
+  \label{quad:portas-prog-cnt}
+  \centering
+  \begin{tabular}{lcp{8.8cm}}
+    \hline
+    Porta & Direção & Descrição \\ \hline
+    \texttt{nrst} & entrada & \textit{Reset} assíncrono (ativo baixo); zera o contador \\
+    \texttt{clk\_in} & entrada & Clock; incremento e carga na borda de subida \\
+    \texttt{pc\_ctrl[1..0]} & entrada & Seleção de função (Quadro~\ref{quad:pc-ctrl}) \\
+    \texttt{new\_pc\_in[10..0]} & entrada & Valor carregado quando \texttt{pc\_ctrl = "10"} \\
+    \texttt{from\_stack[10..0]} & entrada & Valor carregado quando \texttt{pc\_ctrl = "01"} \\
+    \texttt{next\_pc\_out[10..0]} & saída & Próximo valor do contador (saída combinacional) \\
+    \texttt{pc\_out[10..0]} & saída & Valor atual do contador (saída dos \textit{flip-flops}) \\ \hline
+  \end{tabular}
+  \fonte{Adaptado de \textcite{tp2}.}
+\end{quadro}
+
+\section{Implementação}
+
+O circuito separa a lógica de próximo estado e o registrador: um comando concorrente \texttt{WITH pc\_ctrl SELECT} define \texttt{next\_pc} entre \texttt{pc}, \texttt{from\_stack}, \texttt{new\_pc\_in} e \texttt{pc + 1} (cuja soma em 11 bits com \texttt{std\_logic\_unsigned} realiza naturalmente a contagem módulo 2048), enquanto o \texttt{process(nrst, clk\_in)} zera \texttt{pc} no reset ou registra \texttt{pc <= next\_pc} na borda de subida. A Figura~\ref{fig:rtl-prog-cnt} apresenta o circuito RTL e o Código~\ref{lst:prog-cnt}, a descrição VHDL.
+
+\begin{figure}[!htb]
+  \centering
+  \caption{Circuito do contador de programa em nível RTL.}
+  \label{fig:rtl-prog-cnt}
+  \includegraphics[width=0.55\textwidth, height=0.38\textheight, keepaspectratio]{prog_cnt_rtl.pdf}
+  \fonte{Elaborado a partir do site RapidRTL, com base no arquivo \texttt{project/prog\_cnt/prog\_cnt.vhd}.}
+\end{figure}
+
+\blocovhdl{Descrição VHDL do contador de programa.}{lst:prog-cnt}{prog_cnt}{prog_cnt.vhd}
+
+\section{Simulação e resultados}
+
+Foram criadas quatro formas de onda: \texttt{prog\_cnt.vwf} (visão geral), \texttt{prog\_cnt\_incremento.vwf} (volta de 2047 a 0), \texttt{prog\_cnt\_carga.vwf} (cargas síncronas e resposta imediata de \texttt{next\_pc\_out}) e \texttt{prog\_cnt\_reset.vwf} (prioridade do reset). A Figura~\ref{fig:sim-prog-cnt} e a Tabela~\ref{tab:caso-prog-cnt} evidenciam o avanço de \texttt{next\_pc\_out} antes da borda e a atualização síncrona de \texttt{pc\_out} no incremento (20--80\,ns), na retenção (80--100\,ns), nas cargas de \texttt{new\_pc\_in} (100) e \texttt{from\_stack} (677) e no \textit{reset} assíncrono em 205\,ns.
+
+\begin{figure}[!htb]
+  \centering
+  \caption{Simulação funcional de \texttt{prog\_cnt.vwf} (visão geral).}
+  \label{fig:sim-prog-cnt}
+  \includegraphics[width=\textwidth]{../../project/prog_cnt/prog_cnt_simulation.png}
+  \fonte{Autoria própria (Quartus II).}
+\end{figure}
+
+{\SingleSpacing\FloatBarrier\input{capitulos/tabelas/prog_cnt.tex}}
+
+%=====================================================
+\chapter{Conclusão}
+\label{cap:conclusao}
+
+Os quatro módulos sequenciais especificados (\texttt{reg\_bank}, \texttt{reg\_status}, \texttt{stack} e \texttt{prog\_cnt}) foram implementados em VHDL e validados com sucesso. A separação entre lógica combinacional concorrente e processos restritos aos registradores sensíveis a \texttt{nrst} e \texttt{clk\_in} eliminou a inferência de \textit{latches} indesejados e resultou exatamente na contagem esperada de \textit{flip-flops} ($32$, $5$, $88$ e $11$). O Quadro~\ref{quad:recursos} sintetiza o uso de recursos e a frequência máxima no Cyclone II EP2C35F672C6, confirmando operação folgada acima dos 50\,MHz da placa DE2. Todas as simulações funcionais no Quartus II concordaram integralmente com os valores esperados, deixando os blocos prontos para integração com a ALU (TP1) e com a unidade de controle nos próximos trabalhos.
+
+\begin{quadro}[!htb]
+  \SingleSpacing
+  \caption{Recursos e \textit{timing} de cada bloco no Cyclone II EP2C35F672C6, com clock de 50\,MHz.}
+  \label{quad:recursos}
+  \centering
+  \begin{tabular}{lcccc}
+    \hline
+    Bloco & Elementos lógicos & \textit{Flip-flops} & Pinos & $f_{max}$ (modelo lento) \\ \hline
+    \texttt{reg\_bank}   & 36 & 32 & 31 & 78,9\,MHz \\
+    \texttt{reg\_status} & 5  & 5  & 17 & 125,8\,MHz \\
+    \texttt{stack}       & 89 & 88 & 26 & 125,6\,MHz \\
+    \texttt{prog\_cnt}   & 33 & 11 & 48 & 65,6\,MHz \\ \hline
+  \end{tabular}
+  \fonte{Relatórios de compilação do Quartus II (\textit{Fitter} e TimeQuest).}
+\end{quadro}
 
 % ELEMENTOS PÓS-TEXTUAIS ------------------------------------------------------
-
 \postextual
-
 \pagestyle{plain}
 
-%----------------------------------------------------
-% Referências bibliográficas
-%----------------------------------------------------
-
+{\SingleSpacing
 \printbibliography[heading=bibintoc,title={Referências}]
-
-%-----------------------------------------------------
-% Glossário 
-%-----------------------------------------------------
-% Consulte o manual da classe abntex2 para orientações sobre o glossário.
-
-%\glossary
-
-%-----------------------------------------------------
-% Apêndices 
-%-----------------------------------------------------
-% Inicia os apêndices
-%---
+}
 
 \begin{apendicesenv}
-\input{capitulos/apend.tex}
+\chapter{Arquivos do projeto}
+\label{ap:arquivos}
+
+Cada bloco possui um projeto independente em \texttt{project/<nome>/} (\texttt{reg\_bank}, \texttt{reg\_status}, \texttt{stack} e \texttt{prog\_cnt}) contendo:
+\begin{description}
+  \item[\texttt{<nome>.vhd}, \texttt{.qpf}, \texttt{.qsf}, \texttt{.sdc}] código VHDL, projeto Quartus II para o Cyclone II EP2C35F672C6 e restrição temporal de 50\,MHz;
+  \item[\texttt{<nome>*.vwf} e \texttt{<nome>\_simulation.png}] arquivos de estímulo de simulação e captura da forma de onda principal;
+  \item[\texttt{<nome>\_rtl.svg}] esquemático RTL extraído via RapidRTL e convertido em PDF pelo \texttt{.justfile}.
+\end{description}
+
+\chapter{Casos de teste das demais formas de onda}
+\label{ap:tabelas}
+
+Apresentam-se a seguir as tabelas de valores esperados (ao final de cada intervalo) das demais formas de onda simuladas para cada bloco.
+
+{\SingleSpacing\renewcommand{\arraystretch}{0.92}
+\section{Banco de registradores}
+\input{capitulos/tabelas/reg_bank_escrita.tex}
+\input{capitulos/tabelas/reg_bank_leitura.tex}
+\input{capitulos/tabelas/reg_bank_wr_ena.tex}
+\input{capitulos/tabelas/reg_bank_reset.tex}
+
+\section{Registrador de status}
+\input{capitulos/tabelas/reg_status_escrita.tex}
+\input{capitulos/tabelas/reg_status_enable.tex}
+\input{capitulos/tabelas/reg_status_alu.tex}
+\input{capitulos/tabelas/reg_status_reset.tex}
+
+\section{Pilha}
+\input{capitulos/tabelas/stack_lifo.tex}
+\input{capitulos/tabelas/stack_overflow.tex}
+\input{capitulos/tabelas/stack_push_pop.tex}
+\input{capitulos/tabelas/stack_reset.tex}
+
+\section{Contador de programa}
+\input{capitulos/tabelas/prog_cnt_incremento.tex}
+\input{capitulos/tabelas/prog_cnt_carga.tex}
+\input{capitulos/tabelas/prog_cnt_reset.tex}
+}
 \end{apendicesenv}
 
-%--- 
-
-%-----------------------------------------------------
-% Anexos (não utilizados)
-%-----------------------------------------------------
-
-% Este relatório não possui anexos.
-
-%-----------------------------------------------------
-% INDICE REMISSIVO
-%-----------------------------------------------------
-
-% Este relatório não utiliza índice remissivo.
-% \input{capitulos/indiceremiss.tex}
-
-%-----------------------------------------------------
 \end{document}
